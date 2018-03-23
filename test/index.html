@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>fo-markdown-note Vue Component</title>
+
+    <!-- 
+    These dependencies are expected to be in any environment in which the component is used.
+    They are not bundled into fo-markdown-note-bundle.js.
+    -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/jqueryui/jquery-ui.min.js"></script>
+    <script src="node_modules/lodash/lodash.js"></script>
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+
+    <!-- 
+    Gridstack is used in the test application only as a convenient means of 
+    arranging multiple instances of fo-markdown-note on the page.
+    -->
+    <script src="node_modules/gridstack/dist/gridstack.min.js"></script>
+    <script src="node_modules/gridstack/dist/gridstack.jQueryUI.min.js"></script>
+    <link rel="stylesheet" href="node_modules/gridstack/dist/gridstack.min.css" />
+
+    <!-- index.css is part of the test application only, not fo-markdown-note. -->
+    <link rel="stylesheet" href="index.css" />
+
+</head>
+<body>
+    <div id="app">
+        <h2>fo-markdown-note Vue.js Component Test Page</h2>        
+        <div id='grid-stack' class="grid-stack">
+
+            <div class="grid-stack-item" data-gs-width="4" data-gs-height="4">
+                <div class="grid-stack-item-content">
+                    <div id="container1" class="note-container">
+                        <fo-markdown-note 
+                            id="note1"
+                            note="### Typewriter drill
+*Now is the time for all good men to come to the aid of their country.*
+
+It exactly fills our a 70-space line if you put a period at the end." 
+                            bgcolor="LemonChiffon"
+                            v-on:change="noteOnChange()">
+                        </fo-markdown-note>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid-stack-item" data-gs-x="0" data-gs-y="6" data-gs-width="5" data-gs-height="4">
+                <div class="grid-stack-item-content">
+                    <div id="container2" class="note-container">
+                        <fo-markdown-note 
+                            id="note2" 
+                            bgcolor="#f3f3f3"
+                            note="**Juliet**
+
+O Romeo, Romeo, wherefore art thou Romeo?
+Deny thy father and refuse thy name.
+Or if thou wilt not, be but sworn my love
+And I’ll no longer be a Capulet.
+‘Tis but thy name that is my enemy:
+Thou art thyself, though not a Montague.
+What’s Montague? It is nor hand nor foot
+Nor arm nor face nor any other part
+Belonging to a man. O be some other name.
+What’s in a name? That which we call a rose
+By any other name would smell as sweet;
+So Romeo would, were he not Romeo call’d,
+Retain that dear perfection which he owes
+Without that title. Romeo, doff thy name,
+And for that name, which is no part of thee,
+Take all myself.">
+                        </fo-markdown-note>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid-stack-item" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="4">
+                <div class="grid-stack-item-content">
+                    <div id="container3" class="note-container">
+                        <fo-markdown-note 
+                            id="note3" 
+                            note="Now in these dread latter days of the old violent beloved U.S.A. and of the Christ-forgetting Christ-haunted death-dealing Western world I came to myself in a grove of young pines and the question came to me: has it happened at last?
+        
+Walker Percy
+*Love in the Ruins*"
+                            bgcolor="PaleGreen"
+                            font-family="'Palatino Linotype', 'Liberation Serif'"
+                            font-size="16px">
+                        </fo-markdown-note>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid-stack-item" data-gs-x="5" data-gs-y="6" data-gs-width="4" data-gs-height="4">
+                <div class="grid-stack-item-content">
+                    <div id="container4" class="note-container">
+                        <fo-markdown-note 
+                            id="note4" 
+                            note="There was a wisteria vine blooming for the second time that summer on a wooden trellis before one window, into which sparrows came now and then in random gusts, making a dry vivid dusty sound before going away: and opposite Quentin, Miss Coldfield in the eternal black which she had worn for forty-three years now, whether for sister, father, or nothusband none knew, sitting so bolt upright in the straight hard chair that was so tall for her that her legs hung straight and rigid as if she had iron shinbones and ankles, clear of the floor with that air of impotent and static rage like children’s feet, and talking in that grim haggard amazed voice until at last listening would renege and hearing-sense self-confound and the long-dead object of her impotent yet indomitable frustration would appear, as though by outraged recapitulation evoked, quiet inattentive and harmless, out of the biding and dreamy and victorious dust.
+
+William Faulkner
+*Absalom, Absalom\!*" 
+                            bgcolor="RebeccaPurple" 
+                            color="#fff">
+                        </fo-markdown-note>
+                    </div>
+                </div>
+            </div>
+        
+        </div>    
+    </div>
+
+    <!-- index.es6.js is part of the test application only, not fo-markdown-note. -->
+    <script type="module" src="index.es6.js"></script>
+</body>
+</html>

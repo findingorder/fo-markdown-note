@@ -1,0 +1,27 @@
+{
+  "name": "fo-markdown-note",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fo-markdown-note.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "simplemde": "^1.11.2"
+  },
+  "devDependencies": {
+    "jquery": "^3.3.1",
+    "jqueryui": "^1.11.1",
+    "lodash": "^4.17.5",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-ignore": "^1.0.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-postcss": "^1.4.0",
+    "vue": "^2.5.16"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Philip T. Russell",
+  "license": "MIT"
+}

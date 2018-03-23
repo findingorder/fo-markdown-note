@@ -1,0 +1,17 @@
+.grid-stack-item-content {
+    background-color: peachpuff;
+    border: 0;
+    overflow-y: hidden !important;
+}
+
+.note-container {
+    height: 100%;
+    width: 100%;
+    background-color: lavender;
+    border: 0;
+    overflow-y: hidden;
+}
+
+h1, h2, h3, h4, h5 {
+    margin-top: 0;
+}
