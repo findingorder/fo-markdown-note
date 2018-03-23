@@ -16,16 +16,20 @@ fo-markdown-note is packaged into a single file using **rollup.js**.  Currently 
 
 To include fo-markdown-note in your project, simply import it using the ES6 *import* statement:
 
-    import FoMarkdownNote from 'fo-markdown-note-bundle.js'
+```JavaScript
+import FoMarkdownNote from 'fo-markdown-note-bundle.js'
+```
 
 Then include it as a component in your Vue.js model:
 
-    var vueModel = new Vue({
-        el: '#app',
-        components: {
-            FoMarkdownNote
-        }
-    })
+```JavaScript
+var vueModel = new Vue({
+    el: '#app',
+    components: {
+        FoMarkdownNote
+    }
+})
+```
 
 This will make the *\<fo-markdown-note\>* tag available for use within your project's HTML. 
 
@@ -49,13 +53,14 @@ Values for the following attributes are expressed using **CSS** syntax:
 
 ### Example
 
-    <fo-markdown-note 
-        id="note1"                    
-        note="Remember to do what I forgot to do."
-        bgcolor="LemonChiffon"
-        v-on:change="noteOnChange()">
-    </fo-markdown-note>
-
+```html
+<fo-markdown-note 
+    id="note1"                    
+    note="Remember to do what I forgot to do."
+    bgcolor="LemonChiffon"
+    v-on:change="noteOnChange()">
+</fo-markdown-note>
+```
 
 ## Building fo-markdown-note
 
@@ -63,7 +68,9 @@ The source code for fo-markdown-note can be found in the **src** directory. The 
 
 When you clone or download the **git** repo, you don't get the **src/node_modules** directory. Since this directory can be easily re-generated using **npm**, there's no reason to include it in the git repo.  The **src/package.json** contains all of the information needed to re-generate the **src/node_modules** directory.  To do this, *cd* to the **src** directory and enter the command:
 
-    npm install
+```bash
+npm install
+```
 
 npm will fetch and install all of the node modules listed in **package.json**.
 
@@ -71,12 +78,16 @@ fo-markdown-note is built into a rollup.js bundle using the **build.sh** script 
 
 To build the bundle, *cd* to the **src** directory and enter the command
 
-    ./build.sh
+```bash
+./build.sh
+```
 
 After a successful build, you should see the following results:
 
-    fo-markdown-note.js → ../dist/fo-markdown-note-bundle.js...
-    created ../dist/fo-markdown-note-bundle.js in 1.8s
+```
+fo-markdown-note.js → ../dist/fo-markdown-note-bundle.js...
+created ../dist/fo-markdown-note-bundle.js in 1.8s
+```
 
 ## Running the Test Application
 
@@ -86,7 +97,9 @@ As you did with the **src** directory, you must run *npm install* to re-generate
 
 The test application can be run using the *http-server* npm module.  To run it, *cd* to the **test** directory and enter the command
 
-    http-server
+```bash
+http-server
+```
 
 This will open a simple web server that serves its content on *http://localhost:8080*.
 
