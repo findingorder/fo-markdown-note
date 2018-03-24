@@ -124,7 +124,7 @@ npm install fo-markdown-note
 This will place a copy of **fo-markdown-note-bundle.js** in your project's **node_modules** directory along with its dependencies.  You can then import it into your ES6 JavaScript using the command
 
 ```JavaScript
-import FoMarkdownNote from 'node_modules/fo-markdown-note-bundle.js'
+import FoMarkdownNote from 'node_modules/fo-markdown-note/fo-markdown-note-bundle.js'
 ```
 
 In this scenario, **fo-markdown-note-bundle.js** will contain all of the bundled dependencies, and the external dependencies will be made known to NPM in the **npm/package.json** file.  This **package.json** file is different from the one found in the **src** directory, and is used only for publishing on NPM.  
