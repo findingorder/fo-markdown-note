@@ -33,20 +33,6 @@ var vueModel = new Vue({
 
 This will make the *\<fo-markdown-note\>* tag available for use within your project's HTML. 
 
-## Getting fo-markdown-note from NPM
-
-If you want to use the **dist/fo-markdown-note-bundle.js** in your project and don't think you'll ever need to re-build it, you can obtain it from NPM using the command
-
-```bash
-npm install fo-markdown-note
-```
-
-This will place a copy of **fo-markdown-note-bundle.js** in your project's **node_modules** directory along with its dependencies.  You can then import it into your ES6 JavaScript using the command
-
-```JavaScript
-import FoMarkdownNote from 'node_modules/fo-markdown-note-bundle.js'
-```
-
 ### Attributes
 
 The following attributes can be included in an *\<fo-markdown-note\>* tag:
@@ -126,6 +112,22 @@ The latter category includes widely-used libraries such as JQuery, Lodash, and V
 Bundled into **fo-markdown-note-bundle-js** are libraries that are unique or specific to fo-markdown-note. Since the main purpose of fo-markdown-note is to wrap SimpleMDE into a Vue.js component, SimpleMDE and its CodeMirror dependency are bundled.
 
 You can change which libraries you want to bundle or keep external by editing the **src/package.json** file and moving them between the *dependencies* and *devDependencies* sections, or through use of the *external* option in **src/rollup.config.js**.  You need to re-build the bundle after making any such changes.
+
+## Getting fo-markdown-note from NPM
+
+If you want to use the **dist/fo-markdown-note-bundle.js** in your project and don't think you'll ever need to re-build it, you can obtain it from NPM using the command
+
+```bash
+npm install fo-markdown-note
+```
+
+This will place a copy of **fo-markdown-note-bundle.js** in your project's **node_modules** directory along with its dependencies.  You can then import it into your ES6 JavaScript using the command
+
+```JavaScript
+import FoMarkdownNote from 'node_modules/fo-markdown-note-bundle.js'
+```
+
+In this scenario, **fo-markdown-note-bundle.js** will contain all of the bundled dependencies, and the external dependencies will be made known to NPM in the **npm/package.json** file.  This **package.json** file is different from the one found in the **src** directory, and is used only for publishing on NPM.  
 
 ## Acknowledgements
 
