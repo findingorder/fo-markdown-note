@@ -33,6 +33,20 @@ var vueModel = new Vue({
 
 This will make the *\<fo-markdown-note\>* tag available for use within your project's HTML. 
 
+## Getting fo-markdown-note from NPM
+
+If you want to use the **dist/fo-markdown-note-bundle.js** in your project and don't think you'll ever need to re-build it, you can obtain it from NPM using the command
+
+```bash
+npm install fo-markdown-note
+```
+
+This will place a copy of **fo-markdown-note-bundle.js** in your project's **node_modules** directory along with its dependencies.  You can then import it into your ES6 JavaScript using the command
+
+```JavaScript
+import FoMarkdownNote from 'node_modules/fo-markdown-note-bundle.js'
+```
+
 ### Attributes
 
 The following attributes can be included in an *\<fo-markdown-note\>* tag:
