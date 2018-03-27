@@ -10,7 +10,7 @@ export default {
     
     props: {
         id: String, 
-        bgcolor: {
+        backgroundColor: {
             type: String,
             default: '#fff'
         }, 
@@ -26,7 +26,7 @@ export default {
         fontSize: {
             // Corresponding attribute: font-size
             type: String,
-            default: '14px'
+            default: '16px'
         },
         note: String
     },
@@ -82,9 +82,9 @@ export default {
 
         this.initializeResizeListeners()
 
-        this.throttledSetCursorPosition = _.throttle(() => {
-            console.info("THROTTLED")
-        })
+        // this.throttledSetCursorPosition = _.throttle(() => {
+        //     console.info("THROTTLED")
+        // })
 
         this.enterPreviewMode('mounted')
 
@@ -103,7 +103,7 @@ export default {
         },
     
         enterEditMode(caller) {
-            console.info('fo-markdown-note: enterEditMode(): Start; caller = ' + caller + '; this.mode = ' + this.mode)
+            // console.info('fo-markdown-note: enterEditMode(): Start; caller = ' + caller + '; this.mode = ' + this.mode)
             if ((!this.mode) || (this.mode == 'preview')) {
 
                 // console.info("fo-markdown-note: enterEditMode(): Currently in preview mode, switching to edit mode")                    
@@ -190,7 +190,7 @@ export default {
 
         initializeCodeMirrorStyles() {
             let cmds = this.codeMirrorDiv.style
-                cmds.backgroundColor = this.bgcolor                    
+                cmds.backgroundColor = this.backgroundColor                    
                 cmds.color = this.color
                 cmds.border = 0
                 cmds.paddingTop = 0
@@ -213,7 +213,7 @@ export default {
                 this.previewElement = this.codeMirrorDiv.getElementsByClassName('editor-preview')[0]
                 let pes = this.previewElement.style
                     pes.cursor = 'default'
-                    pes.backgroundColor = this.bgcolor
+                    pes.backgroundColor = this.backgroundColor
             }
         },
 
@@ -229,11 +229,9 @@ export default {
             })
         },
 
-        initializeVueOuterDivStyles() {
-            let defaultFontSize = '16px'
-            
+        initializeVueOuterDivStyles() {            
             let ods = this.vueOuterDiv.style
-                ods.fontSize = defaultFontSize
+                ods.fontSize = this.fontSize
                 ods.height = '100%'
 
             // Wait a short time until the browser is able to remove the scrollbars.
