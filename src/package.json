@@ -1,13 +1,14 @@
 {
   "name": "fo-markdown-note",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "fo-markdown-note.js",
   "directories": {
     "lib": "lib"
   },
   "dependencies": {
-    "simplemde": "^1.11.2"
+    "simplemde": "^1.11.2",
+    "vue-resize": "^0.4.4"
   },
   "devDependencies": {
     "jquery": "^3.3.1",
@@ -19,7 +20,7 @@
     "rollup-plugin-postcss": "^1.4.0",
     "vue": "^2.5.16"
   },
-  "repository" : {
+  "repository": {
     "type": "git",
     "url": "https://github.com/findingorder/fo-markdown-note"
   },

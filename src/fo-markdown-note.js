@@ -1,8 +1,9 @@
 // console.info("fo-markdown-note.es6.js: Start")
 
-import addResizeListener from './lib/detect-element-resize.js'
 import SimpleMDE from 'simplemde'
 import './lib/simplemde-modified.css'
+import './node_modules/vue-resize/dist/vue-resize.css'
+// import { ResizeObserver } from 'vue-resize'
 
 export default {
 
@@ -57,6 +58,8 @@ export default {
                 <textarea :id='textareaId'>{{note}}</textarea>    
         </div>
     `,
+    // <resize-observer id='outer-div-resize-observer' @notify='outerDivOnResize' />
+
 
     mounted() {
         // console.info('fo-markdown-note.es6.js: mounted(): Start')
@@ -80,11 +83,7 @@ export default {
 
         this.initializeCodeMirrorDivIfNecessary()
 
-        this.initializeResizeListeners()
-
-        // this.throttledSetCursorPosition = _.throttle(() => {
-        //     console.info("THROTTLED")
-        // })
+        // this.initializeResizeObserver()
 
         this.enterPreviewMode('mounted')
 
@@ -125,7 +124,7 @@ export default {
                         
                         // Remember the cursor position so we can re-position it whenever the markdown note is resized
 
-                        this.getCursorPosition()
+                        // this.getCursorPosition()
 
                         // This requires a teeny tiny delay in order to work.
                         setTimeout(() => { 
@@ -141,7 +140,7 @@ export default {
                     this.editModeIsInitialized = true
                 }
 
-                this.getCursorPosition()                
+                // this.getCursorPosition()                
             } else {
                 // console.info("fo-markdown-note: enterEditMode(): Not in preview mode, nothing to do")                    
             }
@@ -169,10 +168,10 @@ export default {
             // console.info("fo-markdown-note: enterPreviewMode(): End")
         },
 
-        getCursorPosition() {
-            let cursor = this.simplemde.codemirror.getCursor()                
-            this.cursorPosition = { line: cursor.line, ch: cursor.ch }
-        },
+        // getCursorPosition() {
+        //     let cursor = this.simplemde.codemirror.getCursor()                
+        //     this.cursorPosition = { line: cursor.line, ch: cursor.ch }
+        // },
 
         initializeCodeMirrorDivIfNecessary() {
             if (!this.codeMirrorDiv) {
@@ -217,17 +216,18 @@ export default {
             }
         },
 
-        initializeResizeListeners() {
-            // console.info('fo-markdown-note: initializeResizeListeners(): Start')
+        // initializeResizeObserver() {
+        //     let resizeObserver = document.getElementById('outer-div-resize-observer')
+        //     resizeObserver.style.position = 'relative'
+        // },
 
-            addResizeListener(this.vueOuterDiv, () => {
-                console.info('fo-markdown-note: Resize listener: Fired!')
-                
-                // Place the cursor in the same position where it was located before the resize.
+        // outerDivOnResize() {
+        //     console.info('fo-sticky-note: outerDivOnResize(): Fired!')
 
-                this.setCursorPosition(this.simplemde, this.cursorPosition)
-            })
-        },
+        //     // Place the cursor in the same position where it was located before the resize.
+            
+        //     this.setCursorPosition(this.simplemde, this.cursorPosition)
+        // },
 
         initializeVueOuterDivStyles() {            
             let ods = this.vueOuterDiv.style
@@ -311,21 +311,21 @@ export default {
             }      
         },
 
-        setCursorPosition: _.debounce((smde, cp) => {
-            // smde = simple markdown editor
-            // cp = cursor position
+        // setCursorPosition: _.debounce((smde, cp) => {
+        //     // smde = simple markdown editor
+        //     // cp = cursor position
 
-            // Place the cursor at the position we previously saved in this.cursorPosition.
+        //     // Place the cursor at the position we previously saved in this.cursorPosition.
 
-            if (cp) {
-                let currentValue = smde.value().trim()
-                smde.value(currentValue)
-                smde.codemirror.setCursor(cp)
-            } else {
-                // console.info("fo-markdown-note: setCursorPosition(): Did not set cursor position because this.cursorPosition was null")                    
-            }
+        //     if (cp) {
+        //         let currentValue = smde.value().trim()
+        //         smde.value(currentValue)
+        //         smde.codemirror.setCursor(cp)
+        //     } else {
+        //         // console.info("fo-markdown-note: setCursorPosition(): Did not set cursor position because this.cursorPosition was null")                    
+        //     }
 
-        }, 100)
+        // }, 100)
 
     }
 }

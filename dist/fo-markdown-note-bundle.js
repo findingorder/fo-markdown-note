@@ -1,151 +1,3 @@
-// console.info('detect-element-resize.js: Start');
-/**
-* Detect Element Resize
-*
-* https://github.com/sdecima/javascript-detect-element-resize
-* Sebastian Decima
-*
-* version: 0.5.3
-**/
-
-function addResizeListener() {
-	var attachEvent = document.attachEvent,
-		stylesCreated = false;
-
-	if (!attachEvent) {
-		var requestFrame = (function(){
-			var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
-								function(fn){ return window.setTimeout(fn, 20); };
-			return function(fn){ return raf(fn); };
-		})();
-
-		var cancelFrame = (function(){
-			var cancel = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame ||
-								   window.clearTimeout;
-		  return function(id){ return cancel(id); };
-		})();
-
-		function resetTriggers(element){
-			var triggers = element.__resizeTriggers__,
-				expand = triggers.firstElementChild,
-				contract = triggers.lastElementChild,
-				expandChild = expand.firstElementChild;
-			contract.scrollLeft = contract.scrollWidth;
-			contract.scrollTop = contract.scrollHeight;
-			expandChild.style.width = expand.offsetWidth + 1 + 'px';
-			expandChild.style.height = expand.offsetHeight + 1 + 'px';
-			expand.scrollLeft = expand.scrollWidth;
-			expand.scrollTop = expand.scrollHeight;
-		}
-		function checkTriggers(element){
-			return element.offsetWidth != element.__resizeLast__.width ||
-						 element.offsetHeight != element.__resizeLast__.height;
-		}
-
-		function scrollListener(e){
-			var element = this;
-			resetTriggers(this);
-			if (this.__resizeRAF__) cancelFrame(this.__resizeRAF__);
-			this.__resizeRAF__ = requestFrame(function(){
-				if (checkTriggers(element)) {
-					element.__resizeLast__.width = element.offsetWidth;
-					element.__resizeLast__.height = element.offsetHeight;
-					element.__resizeListeners__.forEach(function(fn){
-						fn.call(element, e);
-					});
-				}
-			});
-		}
-		/* Detect CSS Animations support to detect element display/re-attach */
-		var animation = false,
-			keyframeprefix = '',
-			animationstartevent = 'animationstart',
-			domPrefixes = 'Webkit Moz O ms'.split(' '),
-			startEvents = 'webkitAnimationStart animationstart oAnimationStart MSAnimationStart'.split(' '),
-			pfx  = '';
-		{
-			var elm = document.createElement('fakeelement');
-			if( elm.style.animationName !== undefined ) { animation = true; }
-
-			if( animation === false ) {
-				for( var i = 0; i < domPrefixes.length; i++ ) {
-					if( elm.style[ domPrefixes[i] + 'AnimationName' ] !== undefined ) {
-						pfx = domPrefixes[ i ];
-						keyframeprefix = '-' + pfx.toLowerCase() + '-';
-						animationstartevent = startEvents[ i ];
-						animation = true;
-						break;
-					}
-				}
-			}
-		}
-
-		var animationName = 'resizeanim';
-		var animationKeyframes = '@' + keyframeprefix + 'keyframes ' + animationName + ' { from { opacity: 0; } to { opacity: 0; } } ';
-		var animationStyle = keyframeprefix + 'animation: 1ms ' + animationName + '; ';
-	}
-
-	function createStyles() {
-		if (!stylesCreated) {
-			//opacity:0 works around a chrome bug https://code.google.com/p/chromium/issues/detail?id=286360
-			var css = (animationKeyframes ? animationKeyframes : '') +
-					'.resize-triggers { ' + (animationStyle ? animationStyle : '') + 'visibility: hidden; opacity: 0; } ' +
-					'.resize-triggers, .resize-triggers > div, .contract-trigger:before { content: \" \"; display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; } .resize-triggers > div { background: #eee; overflow: auto; } .contract-trigger:before { width: 200%; height: 200%; }',
-				head = document.head || document.getElementsByTagName('head')[0],
-				style = document.createElement('style');
-
-			style.type = 'text/css';
-			if (style.styleSheet) {
-				style.styleSheet.cssText = css;
-			} else {
-				style.appendChild(document.createTextNode(css));
-			}
-
-			head.appendChild(style);
-			stylesCreated = true;
-		}
-	}
-
-	window.addResizeListener = function(element, fn){
-		if (attachEvent) element.attachEvent('onresize', fn);
-		else {
-			if (!element.__resizeTriggers__) {
-				if (getComputedStyle(element).position == 'static') element.style.position = 'relative';
-				createStyles();
-				element.__resizeLast__ = {};
-				element.__resizeListeners__ = [];
-				(element.__resizeTriggers__ = document.createElement('div')).className = 'resize-triggers';
-				element.__resizeTriggers__.innerHTML = '<div class="expand-trigger"><div></div></div>' +
-																						'<div class="contract-trigger"></div>';
-				element.appendChild(element.__resizeTriggers__);
-				resetTriggers(element);
-				element.addEventListener('scroll', scrollListener, true);
-
-				/* Listen for a css animation to detect element display/re-attach */
-				animationstartevent && element.__resizeTriggers__.addEventListener(animationstartevent, function(e) {
-					if(e.animationName == animationName)
-						resetTriggers(element);
-				});
-			}
-			element.__resizeListeners__.push(fn);
-		}
-	};
-
-	window.removeResizeListener = function(element, fn){
-		if (attachEvent) element.detachEvent('onresize', fn);
-		else {
-			element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn), 1);
-			if (!element.__resizeListeners__.length) {
-					element.removeEventListener('scroll', scrollListener);
-					element.__resizeTriggers__ = !element.removeChild(element.__resizeTriggers__);
-			}
-		}
-	};
-}
-// })();
-
-// console.info('detect-element-resize.js: End');
-
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function commonjsRequire () {
@@ -16341,7 +16193,11 @@ function styleInject(css, ref) {
 var css = "/**\n * simplemde v1.11.2\n * Copyright Next Step Webs, Inc.\n * @link https://github.com/NextStepWebs/simplemde-markdown-editor\n * @license MIT\n */\n\n.CodeMirror {\n    color: #000\n}\n\n.CodeMirror-lines {\n    padding: 4px 0\n}\n\n.CodeMirror pre {\n    /* padding: 0 4px */\n    padding: 0 0   /* Changed from 4px to 0 for fo-markdown-note. */\n}\n\n.CodeMirror-gutter-filler,\n.CodeMirror-scrollbar-filler {\n    background-color: #fff\n}\n\n.CodeMirror-gutters {\n    border-right: 1px solid #ddd;\n    background-color: #f7f7f7;\n    white-space: nowrap\n}\n\n.CodeMirror-linenumber {\n    padding: 0 3px 0 5px;\n    min-width: 20px;\n    text-align: right;\n    color: #999;\n    white-space: nowrap\n}\n\n.CodeMirror-guttermarker {\n    color: #000\n}\n\n.CodeMirror-guttermarker-subtle {\n    color: #999\n}\n\n.CodeMirror-cursor {\n    border-left: 1px solid #000;\n    border-right: none;\n    width: 0\n}\n\n.CodeMirror div.CodeMirror-secondarycursor {\n    border-left: 1px solid silver\n}\n\n.cm-fat-cursor .CodeMirror-cursor {\n    width: auto;\n    border: 0!important;\n    background: #7e7\n}\n\n.cm-fat-cursor div.CodeMirror-cursors {\n    z-index: 1\n}\n\n.cm-animate-fat-cursor {\n    width: auto;\n    border: 0;\n    -webkit-animation: blink 1.06s steps(1) infinite;\n    -moz-animation: blink 1.06s steps(1) infinite;\n    animation: blink 1.06s steps(1) infinite;\n    background-color: #7e7\n}\n\n@-moz-keyframes blink {\n    50% {\n        background-color: transparent\n    }\n}\n\n@-webkit-keyframes blink {\n    50% {\n        background-color: transparent\n    }\n}\n\n@keyframes blink {\n    50% {\n        background-color: transparent\n    }\n}\n\n.cm-tab {\n    display: inline-block;\n    text-decoration: inherit\n}\n\n.CodeMirror-ruler {\n    border-left: 1px solid #ccc;\n    position: absolute\n}\n\n.cm-s-default .cm-header {\n    color: #00f\n}\n\n.cm-s-default .cm-quote {\n    color: #090\n}\n\n.cm-negative {\n    color: #d44\n}\n\n.cm-positive {\n    color: #292\n}\n\n.cm-header,\n.cm-strong {\n    font-weight: 700\n}\n\n.cm-em {\n    font-style: italic\n}\n\n.cm-link {\n    text-decoration: underline\n}\n\n.cm-strikethrough {\n    text-decoration: line-through\n}\n\n.cm-s-default .cm-keyword {\n    color: #708\n}\n\n.cm-s-default .cm-atom {\n    color: #219\n}\n\n.cm-s-default .cm-number {\n    color: #164\n}\n\n.cm-s-default .cm-def {\n    color: #00f\n}\n\n.cm-s-default .cm-variable-2 {\n    color: #05a\n}\n\n.cm-s-default .cm-variable-3 {\n    color: #085\n}\n\n.cm-s-default .cm-comment {\n    color: #a50\n}\n\n.cm-s-default .cm-string {\n    color: #a11\n}\n\n.cm-s-default .cm-string-2 {\n    color: #f50\n}\n\n.cm-s-default .cm-meta,\n.cm-s-default .cm-qualifier {\n    color: #555\n}\n\n.cm-s-default .cm-builtin {\n    color: #30a\n}\n\n.cm-s-default .cm-bracket {\n    color: #997\n}\n\n.cm-s-default .cm-tag {\n    color: #170\n}\n\n.cm-s-default .cm-attribute {\n    color: #00c\n}\n\n.cm-s-default .cm-hr {\n    color: #999\n}\n\n.cm-s-default .cm-link {\n    color: #00c\n}\n\n.cm-invalidchar,\n.cm-s-default .cm-error {\n    color: red\n}\n\n.CodeMirror-composing {\n    border-bottom: 2px solid\n}\n\ndiv.CodeMirror span.CodeMirror-matchingbracket {\n    color: #0f0\n}\n\ndiv.CodeMirror span.CodeMirror-nonmatchingbracket {\n    color: #f22\n}\n\n.CodeMirror-matchingtag {\n    background: rgba(255, 150, 0, .3)\n}\n\n.CodeMirror-activeline-background {\n    background: #e8f2ff\n}\n\n.CodeMirror {\n    position: relative;\n    overflow: hidden;\n    background: #fff;\n    overflow-y: hidden!important;  /* Changed from scroll to hidden for fo-markdown-note. */\n    overflow-x: hidden!important;\n}\n\n.CodeMirror-scroll {\n    overflow-y: scroll!important;\n    overflow-x: scroll!important;\n    margin-bottom: -30px;\n    margin-right: -30px;\n    padding-bottom: 30px;\n    height: 100%;\n    outline: 0;\n    position: relative\n}\n\n.CodeMirror-sizer {\n    position: relative;\n    border-right: 30px solid transparent\n}\n\n.CodeMirror-gutter-filler,\n.CodeMirror-hscrollbar,\n.CodeMirror-scrollbar-filler,\n.CodeMirror-vscrollbar {\n    position: absolute;\n    z-index: 6;\n    display: none\n}\n\n.CodeMirror-vscrollbar {\n    right: 0;\n    top: 0;\n    overflow-x: hidden;\n    overflow-y: scroll\n}\n\n.CodeMirror-hscrollbar {\n    bottom: 0;\n    left: 0;\n    overflow-y: hidden;\n    overflow-x: scroll\n}\n\n.CodeMirror-scrollbar-filler {\n    right: 0;\n    bottom: 0\n}\n\n.CodeMirror-gutter-filler {\n    left: 0;\n    bottom: 0\n}\n\n.CodeMirror-gutters {\n    position: absolute;\n    left: 0;\n    top: 0;\n    min-height: 100%;\n    z-index: 3\n}\n\n.CodeMirror-gutter {\n    white-space: normal;\n    height: 100%;\n    display: inline-block;\n    vertical-align: top;\n    margin-bottom: -30px\n}\n\n.CodeMirror-gutter-wrapper {\n    position: absolute;\n    z-index: 4;\n    background: 0 0!important;\n    border: none!important;\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    user-select: none\n}\n\n.CodeMirror-gutter-background {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    z-index: 4\n}\n\n.CodeMirror-gutter-elt {\n    position: absolute;\n    cursor: default;\n    z-index: 4\n}\n\n.CodeMirror-lines {\n    cursor: text;\n    min-height: 1px\n}\n\n.CodeMirror pre {\n    -moz-border-radius: 0;\n    -webkit-border-radius: 0;\n    border-radius: 0;\n    border-width: 0;\n    background: 0 0;\n    font-family: inherit;\n    font-size: inherit;\n    margin: 0;\n    white-space: pre;\n    word-wrap: normal;\n    line-height: inherit;\n    color: inherit;\n    z-index: 2;\n    position: relative;\n    overflow: visible;\n    -webkit-tap-highlight-color: transparent;\n    -webkit-font-variant-ligatures: none;\n    font-variant-ligatures: none\n}\n\n.CodeMirror-wrap pre {\n    word-wrap: break-word;\n    white-space: pre-wrap;\n    word-break: normal\n}\n\n.CodeMirror-linebackground {\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    z-index: 0\n}\n\n.CodeMirror-linewidget {\n    position: relative;\n    z-index: 2;\n    overflow: auto\n}\n\n.CodeMirror-code {\n    outline: 0\n}\n\n.CodeMirror-gutter,\n.CodeMirror-gutters,\n.CodeMirror-linenumber,\n.CodeMirror-scroll,\n.CodeMirror-sizer {\n    -moz-box-sizing: content-box;\n    box-sizing: content-box\n}\n\n.CodeMirror-measure {\n    position: absolute;\n    width: 100%;\n    height: 0;\n    overflow: hidden;\n    visibility: hidden\n}\n\n.CodeMirror-cursor {\n    position: absolute\n}\n\n.CodeMirror-measure pre {\n    position: static\n}\n\ndiv.CodeMirror-cursors {\n    visibility: hidden;\n    position: relative;\n    z-index: 3\n}\n\n.CodeMirror-focused div.CodeMirror-cursors,\ndiv.CodeMirror-dragcursors {\n    visibility: visible\n}\n\n.CodeMirror-selected {\n    background: #d9d9d9\n}\n\n.CodeMirror-focused .CodeMirror-selected,\n.CodeMirror-line::selection,\n.CodeMirror-line>span::selection,\n.CodeMirror-line>span>span::selection {\n    background: #d7d4f0\n}\n\n.CodeMirror-crosshair {\n    cursor: crosshair\n}\n\n.CodeMirror-line::-moz-selection,\n.CodeMirror-line>span::-moz-selection,\n.CodeMirror-line>span>span::-moz-selection {\n    background: #d7d4f0\n}\n\n.cm-searching {\n    background: #ffa;\n    background: rgba(255, 255, 0, .4)\n}\n\n.cm-force-border {\n    padding-right: .1px\n}\n\n@media print {\n    .CodeMirror div.CodeMirror-cursors {\n        visibility: hidden\n    }\n}\n\n.cm-tab-wrap-hack:after {\n    content: ''\n}\n\nspan.CodeMirror-selectedtext {\n    background: 0 0\n}\n\n.CodeMirror {\n    height: auto;\n    /* min-height: 300px; */\n    border: 1px solid #ddd;\n    border-bottom-left-radius: 4px;\n    border-bottom-right-radius: 4px;\n    padding: 10px;\n    font: inherit;\n    z-index: 1\n}\n\n.CodeMirror-scroll {\n    /* min-height: 300px */\n}\n\n.CodeMirror-fullscreen {\n    background: #fff;\n    position: fixed!important;\n    top: 50px;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: auto;\n    z-index: 9\n}\n\n.CodeMirror-sided {\n    width: 50%!important\n}\n\n.editor-toolbar {\n    position: relative;\n    opacity: .6;\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    -o-user-select: none;\n    user-select: none;\n    padding: 0 10px;\n    border-top: 1px solid #bbb;\n    border-left: 1px solid #bbb;\n    border-right: 1px solid #bbb;\n    border-top-left-radius: 4px;\n    border-top-right-radius: 4px\n}\n\n.editor-toolbar:after,\n.editor-toolbar:before {\n    display: block;\n    content: ' ';\n    height: 1px\n}\n\n.editor-toolbar:before {\n    margin-bottom: 8px\n}\n\n.editor-toolbar:after {\n    margin-top: 8px\n}\n\n.editor-toolbar:hover,\n.editor-wrapper input.title:focus,\n.editor-wrapper input.title:hover {\n    opacity: .8\n}\n\n.editor-toolbar.fullscreen {\n    width: 100%;\n    height: 50px;\n    overflow-x: auto;\n    overflow-y: hidden;\n    white-space: nowrap;\n    padding-top: 10px;\n    padding-bottom: 10px;\n    box-sizing: border-box;\n    background: #fff;\n    border: 0;\n    position: fixed;\n    top: 0;\n    left: 0;\n    opacity: 1;\n    z-index: 9\n}\n\n.editor-toolbar.fullscreen::before {\n    width: 20px;\n    height: 50px;\n    background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 0) 100%);\n    background: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(255, 255, 255, 1)), color-stop(100%, rgba(255, 255, 255, 0)));\n    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 0) 100%);\n    background: -o-linear-gradient(left, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 0) 100%);\n    background: -ms-linear-gradient(left, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 0) 100%);\n    background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 0) 100%);\n    position: fixed;\n    top: 0;\n    left: 0;\n    margin: 0;\n    padding: 0\n}\n\n.editor-toolbar.fullscreen::after {\n    width: 20px;\n    height: 50px;\n    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 1) 100%);\n    background: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 1)));\n    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 1) 100%);\n    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 1) 100%);\n    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 1) 100%);\n    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 1) 100%);\n    position: fixed;\n    top: 0;\n    right: 0;\n    margin: 0;\n    padding: 0\n}\n\n.editor-toolbar a {\n    display: inline-block;\n    text-align: center;\n    text-decoration: none!important;\n    color: #2c3e50!important;\n    width: 30px;\n    height: 30px;\n    margin: 0;\n    border: 1px solid transparent;\n    border-radius: 3px;\n    cursor: pointer\n}\n\n.editor-toolbar a.active,\n.editor-toolbar a:hover {\n    background: #fcfcfc;\n    border-color: #95a5a6\n}\n\n.editor-toolbar a:before {\n    line-height: 30px\n}\n\n.editor-toolbar i.separator {\n    display: inline-block;\n    width: 0;\n    border-left: 1px solid #d9d9d9;\n    border-right: 1px solid #fff;\n    color: transparent;\n    text-indent: -10px;\n    margin: 0 6px\n}\n\n.editor-toolbar a.fa-header-x:after {\n    font-family: Arial, \"Helvetica Neue\", Helvetica, sans-serif;\n    font-size: 65%;\n    vertical-align: text-bottom;\n    position: relative;\n    top: 2px\n}\n\n.editor-toolbar a.fa-header-1:after {\n    content: \"1\"\n}\n\n.editor-toolbar a.fa-header-2:after {\n    content: \"2\"\n}\n\n.editor-toolbar a.fa-header-3:after {\n    content: \"3\"\n}\n\n.editor-toolbar a.fa-header-bigger:after {\n    content: \"▲\"\n}\n\n.editor-toolbar a.fa-header-smaller:after {\n    content: \"▼\"\n}\n\n.editor-toolbar.disabled-for-preview a:not(.no-disable) {\n    pointer-events: none;\n    background: #fff;\n    border-color: transparent;\n    text-shadow: inherit\n}\n\n@media only screen and (max-width:700px) {\n    .editor-toolbar a.no-mobile {\n        display: none\n    }\n}\n\n.editor-statusbar {\n    padding: 8px 10px;\n    font-size: 12px;\n    color: #959694;\n    text-align: right\n}\n\n.editor-statusbar span {\n    display: inline-block;\n    min-width: 4em;\n    margin-left: 1em\n}\n\n.editor-preview,\n.editor-preview-side {\n    padding: 10px;\n    background: #fafafa;\n    overflow: auto;\n    display: none;\n    box-sizing: border-box\n}\n\n.editor-statusbar .lines:before {\n    content: 'lines: '\n}\n\n.editor-statusbar .words:before {\n    content: 'words: '\n}\n\n.editor-statusbar .characters:before {\n    content: 'characters: '\n}\n\n.editor-preview {\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    top: 0;\n    left: 0;\n    z-index: 7\n}\n\n.editor-preview-side {\n    position: fixed;\n    bottom: 0;\n    width: 50%;\n    top: 50px;\n    right: 0;\n    z-index: 9;\n    border: 1px solid #ddd\n}\n\n.editor-preview-active,\n.editor-preview-active-side {\n    display: block\n}\n\n.editor-preview-side>p,\n.editor-preview>p {\n    margin-top: 0\n}\n\n.editor-preview pre,\n.editor-preview-side pre {\n    background: #eee;\n    margin-bottom: 10px\n}\n\n.editor-preview table td,\n.editor-preview table th,\n.editor-preview-side table td,\n.editor-preview-side table th {\n    border: 1px solid #ddd;\n    padding: 5px\n}\n\n.CodeMirror .CodeMirror-code .cm-tag {\n    color: #63a35c\n}\n\n.CodeMirror .CodeMirror-code .cm-attribute {\n    color: #795da3\n}\n\n.CodeMirror .CodeMirror-code .cm-string {\n    color: #183691\n}\n\n.CodeMirror .CodeMirror-selected {\n    background: #d9d9d9\n}\n\n.CodeMirror .CodeMirror-code .cm-header-1 {\n    font-size: 200%;\n    line-height: 200%\n}\n\n.CodeMirror .CodeMirror-code .cm-header-2 {\n    font-size: 160%;\n    line-height: 160%\n}\n\n.CodeMirror .CodeMirror-code .cm-header-3 {\n    font-size: 125%;\n    line-height: 125%\n}\n\n.CodeMirror .CodeMirror-code .cm-header-4 {\n    font-size: 110%;\n    line-height: 110%\n}\n\n.CodeMirror .CodeMirror-code .cm-comment {\n    background: rgba(0, 0, 0, .05);\n    border-radius: 2px\n}\n\n.CodeMirror .CodeMirror-code .cm-link {\n    color: #7f8c8d\n}\n\n.CodeMirror .CodeMirror-code .cm-url {\n    color: #aab2b3\n}\n\n.CodeMirror .CodeMirror-code .cm-strikethrough {\n    text-decoration: line-through\n}\n\n.CodeMirror .CodeMirror-placeholder {\n    opacity: .5\n}\n\n.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {\n    background: rgba(255, 0, 0, .15)\n}";
 styleInject(css);
 
+var css$1 = ".resize-observer[data-v-b329ee4c]{position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;border:none;background-color:transparent;pointer-events:none;display:block;overflow:hidden;opacity:0}";
+styleInject(css$1);
+
 // console.info("fo-markdown-note.es6.js: Start")
+// import { ResizeObserver } from 'vue-resize'
 
 var foMarkdownNote = {
 
@@ -16396,6 +16252,8 @@ var foMarkdownNote = {
                 <textarea :id='textareaId'>{{note}}</textarea>    
         </div>
     `,
+    // <resize-observer id='outer-div-resize-observer' @notify='outerDivOnResize' />
+
 
     mounted() {
         // console.info('fo-markdown-note.es6.js: mounted(): Start')
@@ -16419,11 +16277,7 @@ var foMarkdownNote = {
 
         this.initializeCodeMirrorDivIfNecessary();
 
-        this.initializeResizeListeners();
-
-        // this.throttledSetCursorPosition = _.throttle(() => {
-        //     console.info("THROTTLED")
-        // })
+        // this.initializeResizeObserver()
 
         this.enterPreviewMode('mounted');
 
@@ -16464,7 +16318,7 @@ var foMarkdownNote = {
                         
                         // Remember the cursor position so we can re-position it whenever the markdown note is resized
 
-                        this.getCursorPosition();
+                        // this.getCursorPosition()
 
                         // This requires a teeny tiny delay in order to work.
                         setTimeout(() => { 
@@ -16480,7 +16334,7 @@ var foMarkdownNote = {
                     this.editModeIsInitialized = true;
                 }
 
-                this.getCursorPosition();                
+                // this.getCursorPosition()                
             } else {
                 // console.info("fo-markdown-note: enterEditMode(): Not in preview mode, nothing to do")                    
             }
@@ -16508,10 +16362,10 @@ var foMarkdownNote = {
             // console.info("fo-markdown-note: enterPreviewMode(): End")
         },
 
-        getCursorPosition() {
-            let cursor = this.simplemde.codemirror.getCursor();                
-            this.cursorPosition = { line: cursor.line, ch: cursor.ch };
-        },
+        // getCursorPosition() {
+        //     let cursor = this.simplemde.codemirror.getCursor()                
+        //     this.cursorPosition = { line: cursor.line, ch: cursor.ch }
+        // },
 
         initializeCodeMirrorDivIfNecessary() {
             if (!this.codeMirrorDiv) {
@@ -16556,17 +16410,18 @@ var foMarkdownNote = {
             }
         },
 
-        initializeResizeListeners() {
-            // console.info('fo-markdown-note: initializeResizeListeners(): Start')
+        // initializeResizeObserver() {
+        //     let resizeObserver = document.getElementById('outer-div-resize-observer')
+        //     resizeObserver.style.position = 'relative'
+        // },
 
-            addResizeListener(this.vueOuterDiv, () => {
-                console.info('fo-markdown-note: Resize listener: Fired!');
-                
-                // Place the cursor in the same position where it was located before the resize.
+        // outerDivOnResize() {
+        //     console.info('fo-sticky-note: outerDivOnResize(): Fired!')
 
-                this.setCursorPosition(this.simplemde, this.cursorPosition);
-            });
-        },
+        //     // Place the cursor in the same position where it was located before the resize.
+            
+        //     this.setCursorPosition(this.simplemde, this.cursorPosition)
+        // },
 
         initializeVueOuterDivStyles() {            
             let ods = this.vueOuterDiv.style;
@@ -16650,21 +16505,21 @@ var foMarkdownNote = {
             }      
         },
 
-        setCursorPosition: _.debounce((smde, cp) => {
-            // smde = simple markdown editor
-            // cp = cursor position
+        // setCursorPosition: _.debounce((smde, cp) => {
+        //     // smde = simple markdown editor
+        //     // cp = cursor position
 
-            // Place the cursor at the position we previously saved in this.cursorPosition.
+        //     // Place the cursor at the position we previously saved in this.cursorPosition.
 
-            if (cp) {
-                let currentValue = smde.value().trim();
-                smde.value(currentValue);
-                smde.codemirror.setCursor(cp);
-            } else {
-                // console.info("fo-markdown-note: setCursorPosition(): Did not set cursor position because this.cursorPosition was null")                    
-            }
+        //     if (cp) {
+        //         let currentValue = smde.value().trim()
+        //         smde.value(currentValue)
+        //         smde.codemirror.setCursor(cp)
+        //     } else {
+        //         // console.info("fo-markdown-note: setCursorPosition(): Did not set cursor position because this.cursorPosition was null")                    
+        //     }
 
-        }, 100)
+        // }, 100)
 
     }
 }
