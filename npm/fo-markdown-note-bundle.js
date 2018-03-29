@@ -16223,6 +16223,10 @@ var foMarkdownNote = {
             type: String,
             default: '16px'
         },
+        lineHeight: {
+            type: String,
+            default: '1.2'
+        },
         note: String
     },
 
@@ -16399,6 +16403,7 @@ var foMarkdownNote = {
                 cmls.paddingBottom = '10px';
                 cmls.paddingLeft = '0';
                 cmls.paddingRight = '0';
+                cmls.lineHeight = this.lineHeight;
             },
 
         initializePreviewElementIfNecessary() {
@@ -16407,6 +16412,7 @@ var foMarkdownNote = {
                 let pes = this.previewElement.style;
                     pes.cursor = 'default';
                     pes.backgroundColor = this.backgroundColor;
+                    pes.lineHeight = this.lineHeight;
             }
         },
 
@@ -16432,6 +16438,8 @@ var foMarkdownNote = {
 
             setTimeout(function() { 
                 ods.visibility = 'visible';
+
+                // TODO: Raise a 'componentReady' event to signal to the parent that the markdown note is now visible.
             }, 500);
                 
             // })

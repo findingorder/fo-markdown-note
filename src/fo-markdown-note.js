@@ -29,6 +29,10 @@ export default {
             type: String,
             default: '16px'
         },
+        lineHeight: {
+            type: String,
+            default: '1.2'
+        },
         note: String
     },
 
@@ -205,6 +209,7 @@ export default {
                 cmls.paddingBottom = '10px'
                 cmls.paddingLeft = '0'
                 cmls.paddingRight = '0'
+                cmls.lineHeight = this.lineHeight
             },
 
         initializePreviewElementIfNecessary() {
@@ -213,6 +218,7 @@ export default {
                 let pes = this.previewElement.style
                     pes.cursor = 'default'
                     pes.backgroundColor = this.backgroundColor
+                    pes.lineHeight = this.lineHeight
             }
         },
 
@@ -238,6 +244,8 @@ export default {
 
             setTimeout(function() { 
                 ods.visibility = 'visible'
+
+                // TODO: Raise a 'componentReady' event to signal to the parent that the markdown note is now visible.
             }, 500)
                 
             // })
