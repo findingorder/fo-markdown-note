@@ -7,6 +7,12 @@ var vueModel = new Vue({
     el: '#app',
     components: {
         FoMarkdownNote
+    },
+    methods: {
+        noteOnChange(newNote) {
+            console.info('index.es6.js: noteOnChange fired! newNote = ')
+            console.info(newNote)
+        }
     }
 })
 

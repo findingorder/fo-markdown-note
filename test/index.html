@@ -40,7 +40,7 @@
 
 It exactly fills out a 70-space line if you put a period at the end." 
                             background-color="LemonChiffon"
-                            v-on:change="noteOnChange()">
+                            v-on:note-change="noteOnChange($event)">
                         </fo-markdown-note>
                     </div>
                 </div>
@@ -69,7 +69,8 @@ So Romeo would, were he not Romeo call’d,
 Retain that dear perfection which he owes
 Without that title. Romeo, doff thy name,
 And for that name, which is no part of thee,
-Take all myself.">
+Take all myself."
+                            v-on:note-change="noteOnChange($event)">
                         </fo-markdown-note>
                     </div>
                 </div>
@@ -86,7 +87,8 @@ Walker Percy
 *Love in the Ruins*"
                             background-color="PaleGreen"
                             font-family="'Palatino Linotype', 'Liberation Serif'"
-                            font-size="16px">
+                            font-size="16px"
+                            v-on:note-change="noteOnChange($event)">
                         </fo-markdown-note>
                     </div>
                 </div>
@@ -102,7 +104,9 @@ Walker Percy
 William Faulkner
 *Absalom, Absalom\!*" 
                             background-color="RebeccaPurple" 
-                            color="#fff">
+                            line-height="1.9"
+                            color="#fff"
+                            v-on:note-change="noteOnChange($event)">
                         </fo-markdown-note>
                     </div>
                 </div>

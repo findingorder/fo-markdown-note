@@ -16331,8 +16331,8 @@ var foMarkdownNote = {
                     });
 
                     this.simplemde.codemirror.on('change', (e) => {
-                        console.info('fo-markdown-note: on change: Fired!');
-                        this.$emit('change');
+                        // console.info('fo-markdown-note: on change: Fired!')
+                        this.$emit('note-change', this.simplemde.value());
                     });
 
                     this.editModeIsInitialized = true;
