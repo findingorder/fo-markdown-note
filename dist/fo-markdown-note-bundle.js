@@ -16479,8 +16479,13 @@ var foMarkdownNote = {
         },
 
         markdownNoteOnClick(e) {
-            // console.info('fo-markdown-note: markdownNoteOnClick(): Start; e =')
-            // console.info(e)
+            console.info('fo-markdown-note: markdownNoteOnClick(): Start; e =');
+            console.info(e);
+
+            console.info('fo-markdown-note: About to emit a click event');
+            this.$emit('click', this);
+            console.info('fo-markdown-note: Finished emitting a click event');
+
 
             if (this.mode == 'edit') {
                 // console.info('fo-markdown-note: markdownNoteOnClick(): Currently in edit mode; nothing to do')
@@ -16499,7 +16504,7 @@ var foMarkdownNote = {
 
             this.blurHandlerEnabled = true;
 
-            // console.info("fo-markdown-note: markdownNoteOnClick(): End")
+            console.info("fo-markdown-note: markdownNoteOnClick(): End");
         },
 
         setCursorColor() {

@@ -10,8 +10,12 @@ var vueModel = new Vue({
     },
     methods: {
         noteOnChange(newNote) {
-            console.info('index.es6.js: noteOnChange fired! newNote = ')
+            console.info('index.es6.js: noteOnChange(): Fired! newNote = ')
             console.info(newNote)
+        },
+        noteOnClick(eventTarget) {
+            console.info('inbox.es6.js: noteOnClick(): Heard a click from eventTarget:')
+            console.info(eventTarget)
         }
     }
 })
