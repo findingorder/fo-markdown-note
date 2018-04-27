@@ -94,6 +94,44 @@ export default {
         // console.info('fo-markdown-note.es6.js: mounted(): End')
     },
 
+    watch: {
+        backgroundColor: function(newValue, oldValue) {
+            console.info('fo-markdown-note.js: watch: backgroundColor: Fired! newValue = ' + newValue)
+            let cmds = this.codeMirrorDiv.style
+                cmds.backgroundColor = this.backgroundColor                    
+
+            let pes = this.previewElement.style
+                pes.backgroundColor = this.backgroundColor
+
+        },
+        color: function(newValue, oldValue) {
+            console.info('fo-markdown-note.js: watch: color: Fired! newValue = ' + newValue)
+            let cmds = this.codeMirrorDiv.style
+                cmds.color = this.color
+
+            let pes = this.previewElement.style
+                pes.color = this.color
+
+            this.setCursorColor()
+        },
+        fontFamily: function(newValue, oldValue) {
+            let cmds = this.codeMirrorDiv.style
+                cmds.fontFamily = this.fontFamily
+        },
+        fontSize: function(newValue, oldValue) {
+            let cmds = this.codeMirrorDiv.style
+                cmds.fontSize = this.fontSize
+            let ods = this.vueOuterDiv.style
+                ods.fontSize = this.fontSize
+        },
+        lineHeight: function(newValue, oldValue) {
+            let cmls = this.codeMirrorLines.style
+                cmls.lineHeight = this.lineHeight
+            let pes = this.previewElement.style
+                pes.lineHeight = this.lineHeight
+        }
+    },
+
     methods: {
         changeHyperlinkTargets() {
             // Check to see if there are any hyperlinks on the preview div or its descendents.
@@ -172,11 +210,6 @@ export default {
             // console.info("fo-markdown-note: enterPreviewMode(): End")
         },
 
-        // getCursorPosition() {
-        //     let cursor = this.simplemde.codemirror.getCursor()                
-        //     this.cursorPosition = { line: cursor.line, ch: cursor.ch }
-        // },
-
         initializeCodeMirrorDivIfNecessary() {
             if (!this.codeMirrorDiv) {
                 this.codeMirrorDiv = this.vueOuterDiv.getElementsByClassName('CodeMirror')[0]
@@ -221,19 +254,6 @@ export default {
                     pes.lineHeight = this.lineHeight
             }
         },
-
-        // initializeResizeObserver() {
-        //     let resizeObserver = document.getElementById('outer-div-resize-observer')
-        //     resizeObserver.style.position = 'relative'
-        // },
-
-        // outerDivOnResize() {
-        //     console.info('fo-sticky-note: outerDivOnResize(): Fired!')
-
-        //     // Place the cursor in the same position where it was located before the resize.
-            
-        //     this.setCursorPosition(this.simplemde, this.cursorPosition)
-        // },
 
         initializeVueOuterDivStyles() {            
             let ods = this.vueOuterDiv.style
@@ -322,23 +342,7 @@ export default {
             for (var i = 0; i < allCursors.length; i++) {
                 allCursors[i].style.borderLeftColor = this.color
             }      
-        },
-
-        // setCursorPosition: _.debounce((smde, cp) => {
-        //     // smde = simple markdown editor
-        //     // cp = cursor position
-
-        //     // Place the cursor at the position we previously saved in this.cursorPosition.
-
-        //     if (cp) {
-        //         let currentValue = smde.value().trim()
-        //         smde.value(currentValue)
-        //         smde.codemirror.setCursor(cp)
-        //     } else {
-        //         // console.info("fo-markdown-note: setCursorPosition(): Did not set cursor position because this.cursorPosition was null")                    
-        //     }
-
-        // }, 100)
+        }
 
     }
 }

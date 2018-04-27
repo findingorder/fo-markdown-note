@@ -8,6 +8,18 @@ var vueModel = new Vue({
     components: {
         FoMarkdownNote
     },
+    data: {
+        // TODO: Remove test data from index.html.
+        // TODO: Generate test data randomly as I did in fo-sticky-note.
+        // TODO: In index.html, bind fo-markdown-note to randomly-generated data using v-for.
+    },
+    mounted() {
+        setTimeout(() => { 
+            // TODO: Iterate markdown note data and make random changes.
+
+        }, 1000)
+
+    },
     methods: {
         noteOnChange(newNote) {
             console.info('index.es6.js: noteOnChange(): Fired! newNote = ')
