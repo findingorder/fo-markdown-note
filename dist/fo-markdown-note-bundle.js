@@ -4310,8 +4310,7 @@ function patchDisplay(cm, updateNumbersFrom, dims) {
   // in display.lineDiv) with the view as we go.
   for (var i = 0; i < view.length; i++) {
     var lineView = view[i];
-    if (lineView.hidden) {
-    } else if (!lineView.node || lineView.node.parentNode != container) { // Not drawn yet
+    if (lineView.hidden) ; else if (!lineView.node || lineView.node.parentNode != container) { // Not drawn yet
       var node = buildLineElement(cm, lineView, lineN, dims);
       container.insertBefore(node, cur);
     } else { // Already drawn
@@ -9680,12 +9679,19 @@ return CodeMirror$1;
 })));
 });
 
+var codemirror$1 = /*#__PURE__*/Object.freeze({
+	default: codemirror,
+	__moduleExports: codemirror
+});
+
+var require$$0 = ( codemirror$1 && codemirror ) || codemirror$1;
+
 var continuelist = createCommonjsModule(function (module, exports) {
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
-  mod(codemirror);
+  mod(require$$0);
 })(function(CodeMirror) {
 
   var listRE = /^(\s*)(>[> ]*|[*+-] \[[x ]\]\s|[*+-]\s|(\d+)([.)]))(\s*)/,
@@ -9771,7 +9777,7 @@ var continuelist = createCommonjsModule(function (module, exports) {
 
 
 
-codemirror.commands.tabAndIndentMarkdownList = function (cm) {
+require$$0.commands.tabAndIndentMarkdownList = function (cm) {
 	var ranges = cm.listSelections();
 	var pos = ranges[0].head;
 	var eolState = cm.getStateAfter(pos.line);
@@ -9791,7 +9797,7 @@ codemirror.commands.tabAndIndentMarkdownList = function (cm) {
 	}
 };
 
-codemirror.commands.shiftTabAndUnindentMarkdownList = function (cm) {
+require$$0.commands.shiftTabAndUnindentMarkdownList = function (cm) {
 	var ranges = cm.listSelections();
 	var pos = ranges[0].head;
 	var eolState = cm.getStateAfter(pos.line);
@@ -9816,7 +9822,7 @@ var fullscreen = createCommonjsModule(function (module, exports) {
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
-  mod(codemirror);
+  mod(require$$0);
 })(function(CodeMirror) {
 
   CodeMirror.defineOption("fullScreen", false, function(cm, val, old) {
@@ -9854,7 +9860,7 @@ var xml = createCommonjsModule(function (module, exports) {
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
-  mod(codemirror);
+  mod(require$$0);
 })(function(CodeMirror) {
 
 var htmlConfig = {
@@ -10247,12 +10253,17 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 });
 });
 
+var xml$1 = /*#__PURE__*/Object.freeze({
+	default: xml,
+	__moduleExports: xml
+});
+
 var meta = createCommonjsModule(function (module, exports) {
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
-  mod(codemirror);
+  mod(require$$0);
 })(function(CodeMirror) {
 
   CodeMirror.modeInfo = [
@@ -10461,12 +10472,21 @@ var meta = createCommonjsModule(function (module, exports) {
 });
 });
 
+var meta$1 = /*#__PURE__*/Object.freeze({
+	default: meta,
+	__moduleExports: meta
+});
+
+var require$$1 = ( xml$1 && xml ) || xml$1;
+
+var require$$2 = ( meta$1 && meta ) || meta$1;
+
 var markdown = createCommonjsModule(function (module, exports) {
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
-  mod(codemirror, xml, meta);
+  mod(require$$0, require$$1, require$$2);
 })(function(CodeMirror) {
 
 CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
@@ -11330,6 +11350,11 @@ CodeMirror.defineMIME("text/x-markdown", "markdown");
 });
 });
 
+var markdown$1 = /*#__PURE__*/Object.freeze({
+	default: markdown,
+	__moduleExports: markdown
+});
+
 var overlay = createCommonjsModule(function (module, exports) {
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
@@ -11344,7 +11369,7 @@ var overlay = createCommonjsModule(function (module, exports) {
 // combined.
 
 (function(mod) {
-  mod(codemirror);
+  mod(require$$0);
 })(function(CodeMirror) {
 
 CodeMirror.overlayMode = function(base, overlay, combine) {
@@ -11417,12 +11442,17 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 });
 });
 
+var overlay$1 = /*#__PURE__*/Object.freeze({
+	default: overlay,
+	__moduleExports: overlay
+});
+
 var placeholder = createCommonjsModule(function (module, exports) {
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
-  mod(codemirror);
+  mod(require$$0);
 })(function(CodeMirror) {
   CodeMirror.defineOption("placeholder", "", function(cm, val, old) {
     var prev = old && old != CodeMirror.Init;
@@ -11489,7 +11519,7 @@ var markSelection = createCommonjsModule(function (module, exports) {
 // "CodeMirror-selectedtext" when the value is not a string.
 
 (function(mod) {
-  mod(codemirror);
+  mod(require$$0);
 })(function(CodeMirror) {
 
   CodeMirror.defineOption("styleSelectedText", false, function(cm, val, old) {
@@ -11594,12 +11624,16 @@ var markSelection = createCommonjsModule(function (module, exports) {
 });
 });
 
+var require$$1$1 = ( markdown$1 && markdown ) || markdown$1;
+
+var require$$2$1 = ( overlay$1 && overlay ) || overlay$1;
+
 var gfm = createCommonjsModule(function (module, exports) {
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
-  mod(codemirror, markdown, overlay);
+  mod(require$$0, require$$1$1, require$$2$1);
 })(function(CodeMirror) {
 
 var urlRE = /^((?:(?:aaas?|about|acap|adiumxtra|af[ps]|aim|apt|attachment|aw|beshare|bitcoin|bolo|callto|cap|chrome(?:-extension)?|cid|coap|com-eventbrite-attendee|content|crid|cvs|data|dav|dict|dlna-(?:playcontainer|playsingle)|dns|doi|dtn|dvb|ed2k|facetime|feed|file|finger|fish|ftp|geo|gg|git|gizmoproject|go|gopher|gtalk|h323|hcp|https?|iax|icap|icon|im|imap|info|ipn|ipp|irc[6s]?|iris(?:\.beep|\.lwz|\.xpc|\.xpcs)?|itms|jar|javascript|jms|keyparc|lastfm|ldaps?|magnet|mailto|maps|market|message|mid|mms|ms-help|msnim|msrps?|mtqp|mumble|mupdate|mvn|news|nfs|nih?|nntp|notes|oid|opaquelocktoken|palm|paparazzi|platform|pop|pres|proxy|psyc|query|res(?:ource)?|rmi|rsync|rtmp|rtsp|secondlife|service|session|sftp|sgn|shttp|sieve|sips?|skype|sm[bs]|snmp|soap\.beeps?|soldat|spotify|ssh|steam|svn|tag|teamspeak|tel(?:net)?|tftp|things|thismessage|tip|tn3270|tv|udp|unreal|urn|ut2004|vemmi|ventrilo|view-source|webcal|wss?|wtai|wyciwyg|xcon(?:-userid)?|xfire|xmlrpc\.beeps?|xmpp|xri|ymsgr|z39\.50[rs]?):(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]|\([^\s()<>]*\))+(?:\([^\s()<>]*\)|[^\s`*!()\[\]{};:'".,<>?«»“”‘’]))/i;
@@ -11726,7 +11760,7 @@ var empty$1 = /*#__PURE__*/Object.freeze({
 	default: empty
 });
 
-var require$$0 = ( empty$1 && empty ) || empty$1;
+var require$$0$1 = ( empty$1 && empty ) || empty$1;
 
 var typo = createCommonjsModule(function (module) {
 /* globals chrome: false */
@@ -11988,7 +12022,7 @@ Typo.prototype = {
 		}
 		else if (typeof commonjsRequire !== 'undefined') {
 			// Node.js
-			var fs = require$$0;
+			var fs = require$$0$1;
 			
 			try {
 				if (fs.existsSync(path)) {
@@ -12661,6 +12695,13 @@ Typo.prototype = {
 }
 });
 
+var typo$1 = /*#__PURE__*/Object.freeze({
+	default: typo,
+	__moduleExports: typo
+});
+
+var Typo = ( typo$1 && typo ) || typo$1;
+
 // Requires
 
 
@@ -12699,7 +12740,7 @@ function CodeMirrorSpellChecker(options) {
 					CodeMirrorSpellChecker.num_loaded++;
 
 					if(CodeMirrorSpellChecker.num_loaded == 2) {
-						CodeMirrorSpellChecker.typo = new typo("en_US", CodeMirrorSpellChecker.aff_data, CodeMirrorSpellChecker.dic_data, {
+						CodeMirrorSpellChecker.typo = new Typo("en_US", CodeMirrorSpellChecker.aff_data, CodeMirrorSpellChecker.dic_data, {
 							platform: "any"
 						});
 					}
@@ -12718,7 +12759,7 @@ function CodeMirrorSpellChecker(options) {
 					CodeMirrorSpellChecker.num_loaded++;
 
 					if(CodeMirrorSpellChecker.num_loaded == 2) {
-						CodeMirrorSpellChecker.typo = new typo("en_US", CodeMirrorSpellChecker.aff_data, CodeMirrorSpellChecker.dic_data, {
+						CodeMirrorSpellChecker.typo = new Typo("en_US", CodeMirrorSpellChecker.aff_data, CodeMirrorSpellChecker.dic_data, {
 							platform: "any"
 						});
 					}
@@ -12774,6 +12815,11 @@ CodeMirrorSpellChecker.dic_data = "";
 
 // Export
 var spellChecker = CodeMirrorSpellChecker;
+
+var spellChecker$1 = /*#__PURE__*/Object.freeze({
+	default: spellChecker,
+	__moduleExports: spellChecker
+});
 
 var marked = createCommonjsModule(function (module, exports) {
 (function(root) {
@@ -14149,6 +14195,15 @@ marked.parse = marked;
 }
 })(commonjsGlobal || (typeof window !== 'undefined' ? window : commonjsGlobal));
 });
+
+var marked$1 = /*#__PURE__*/Object.freeze({
+	default: marked,
+	__moduleExports: marked
+});
+
+var CodeMirrorSpellChecker$1 = ( spellChecker$1 && spellChecker ) || spellChecker$1;
+
+var marked$2 = ( marked$1 && marked ) || marked$1;
 
 // Some variables
 var isMac = /Mac/.test(navigator.platform);
@@ -15526,7 +15581,7 @@ function SimpleMDE(options) {
  * Default markdown render.
  */
 SimpleMDE.prototype.markdown = function(text) {
-	if(marked) {
+	if(marked$2) {
 		// Initialize
 		var markedOptions = {};
 
@@ -15546,11 +15601,11 @@ SimpleMDE.prototype.markdown = function(text) {
 
 
 		// Set options
-		marked.setOptions(markedOptions);
+		marked$2.setOptions(markedOptions);
 
 
 		// Return
-		return marked(text);
+		return marked$2(text);
 	}
 };
 
@@ -15606,8 +15661,8 @@ SimpleMDE.prototype.render = function(el) {
 		backdrop.name = "gfm";
 		backdrop.gitHubSpice = false;
 
-		spellChecker({
-			codeMirrorInstance: codemirror
+		CodeMirrorSpellChecker$1({
+			codeMirrorInstance: require$$0
 		});
 	} else {
 		mode = options.parsingConfig;
@@ -15615,7 +15670,7 @@ SimpleMDE.prototype.render = function(el) {
 		mode.gitHubSpice = false;
 	}
 
-	this.codemirror = codemirror.fromTextArea(el, {
+	this.codemirror = require$$0.fromTextArea(el, {
 		mode: mode,
 		backdrop: backdrop,
 		theme: "paper",
@@ -16290,7 +16345,7 @@ var foMarkdownNote = {
 
     watch: {
         backgroundColor: function(newValue, oldValue) {
-            console.info('fo-markdown-note.js: watch: backgroundColor: Fired! newValue = ' + newValue);
+            // console.info('fo-markdown-note.js: watch: backgroundColor: Fired! newValue = ' + newValue)
             let cmds = this.codeMirrorDiv.style;
                 cmds.backgroundColor = this.backgroundColor;                    
 
@@ -16299,7 +16354,7 @@ var foMarkdownNote = {
 
         },
         color: function(newValue, oldValue) {
-            console.info('fo-markdown-note.js: watch: color: Fired! newValue = ' + newValue);
+            // console.info('fo-markdown-note.js: watch: color: Fired! newValue = ' + newValue)
             let cmds = this.codeMirrorDiv.style;
                 cmds.color = this.color;
 
@@ -16377,8 +16432,6 @@ var foMarkdownNote = {
                 }
 
                 // this.getCursorPosition()                
-            } else {
-                // console.info("fo-markdown-note: enterEditMode(): Not in preview mode, nothing to do")                    
             }
             // console.info("fo-markdown-note: enterEditMode(): End")
         },
@@ -16397,8 +16450,6 @@ var foMarkdownNote = {
 
                 this.changeHyperlinkTargets();
         
-            } else {
-                // console.info("fo-markdown-note: enterPreviewMode(): Currently in preview mode, nothing to do")                   
             }
             
             // console.info("fo-markdown-note: enterPreviewMode(): End")

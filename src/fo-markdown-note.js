@@ -96,7 +96,7 @@ export default {
 
     watch: {
         backgroundColor: function(newValue, oldValue) {
-            console.info('fo-markdown-note.js: watch: backgroundColor: Fired! newValue = ' + newValue)
+            // console.info('fo-markdown-note.js: watch: backgroundColor: Fired! newValue = ' + newValue)
             let cmds = this.codeMirrorDiv.style
                 cmds.backgroundColor = this.backgroundColor                    
 
@@ -105,7 +105,7 @@ export default {
 
         },
         color: function(newValue, oldValue) {
-            console.info('fo-markdown-note.js: watch: color: Fired! newValue = ' + newValue)
+            // console.info('fo-markdown-note.js: watch: color: Fired! newValue = ' + newValue)
             let cmds = this.codeMirrorDiv.style
                 cmds.color = this.color
 
