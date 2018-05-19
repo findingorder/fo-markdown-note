@@ -16287,28 +16287,28 @@ var foMarkdownNote = {
 
     data() { return {
         blurHandlerEnabled:     true,
-        codeMirrorDiv:          null,
-        codeMirrorLines:        null,
         cursorPosition:         null,
         editModeIsInitialized:  false,
         mode:                   null,
-        previewElement:         null,
         simplemde:              null,
-        simpleMdeElement:       null,
         textareaId:             this.id + '-textarea',
-        vueOuterDiv:            null
+        // codeMirrorDiv:          null,
+        // codeMirrorLines:        null,
+        // previewElement:         null,
+        // simpleMdeElement:       null,
+        // vueOuterDiv:            null
     }},
 
     // In the template we set the id of the outer div to be the same as the id of the vue component.
     // Code inside the component should see this as unique and should not confuse it with the vue component itself.
 
     template: `
-        <div :id='id' class='outer-div' 
+        <div :id='id' class='outer-div' ref='vueOuterDiv'
             v-on:mousedown='markdownNoteOnMouseDown' 
             v-on:mouseup='markdownNoteOnMouseUp'
             v-on:keydown='markdownNoteOnKeyDown' 
             style='visibility: hidden;'>
-                <textarea :id='textareaId'>{{note}}</textarea>    
+                <textarea :id='textareaId' ref='simpleMdeElement'>{{note}}</textarea>    
         </div>
     `,
     // <resize-observer id='outer-div-resize-observer' @notify='outerDivOnResize' />
@@ -16319,14 +16319,14 @@ var foMarkdownNote = {
 
         // Initialize convenience references.
     
-        this.vueOuterDiv = document.getElementById(this.id);
+        // this.vueOuterDiv = document.getElementById(this.id)
 
         // Instantiate the SimpleMDE.
 
-        this.simpleMdeElement = document.getElementById(this.textareaId);
+        // this.simpleMdeElement = document.getElementById(this.textareaId)
 
         this.simplemde = new simplemde({
-            element: this.simpleMdeElement,
+            element: this.$refs.simpleMdeElement,
             status: false,
             toolbar: false,
             autofocus: false
@@ -16346,37 +16346,37 @@ var foMarkdownNote = {
     watch: {
         backgroundColor: function(newValue, oldValue) {
             // console.info('fo-markdown-note.js: watch: backgroundColor: Fired! newValue = ' + newValue)
-            let cmds = this.codeMirrorDiv.style;
+            let cmds = this.$refs.codeMirrorDiv.style;
                 cmds.backgroundColor = this.backgroundColor;                    
 
-            let pes = this.previewElement.style;
+            let pes = this.$refs.previewElement.style;
                 pes.backgroundColor = this.backgroundColor;
 
         },
         color: function(newValue, oldValue) {
             // console.info('fo-markdown-note.js: watch: color: Fired! newValue = ' + newValue)
-            let cmds = this.codeMirrorDiv.style;
+            let cmds = this.$refs.codeMirrorDiv.style;
                 cmds.color = this.color;
 
-            let pes = this.previewElement.style;
+            let pes = this.$refs.previewElement.style;
                 pes.color = this.color;
 
             this.setCursorColor();
         },
         fontFamily: function(newValue, oldValue) {
-            let cmds = this.codeMirrorDiv.style;
+            let cmds = this.$refs.codeMirrorDiv.style;
                 cmds.fontFamily = this.fontFamily;
         },
         fontSize: function(newValue, oldValue) {
-            let cmds = this.codeMirrorDiv.style;
+            let cmds = this.$refs.codeMirrorDiv.style;
                 cmds.fontSize = this.fontSize;
-            let ods = this.vueOuterDiv.style;
+            let ods = this.$refs.vueOuterDiv.style;
                 ods.fontSize = this.fontSize;
         },
         lineHeight: function(newValue, oldValue) {
-            let cmls = this.codeMirrorLines.style;
+            let cmls = this.$refs.codeMirrorLines.style;
                 cmls.lineHeight = this.lineHeight;
-            let pes = this.previewElement.style;
+            let pes = this.$refs.previewElement.style;
                 pes.lineHeight = this.lineHeight;
         }
     },
@@ -16386,7 +16386,7 @@ var foMarkdownNote = {
             // Check to see if there are any hyperlinks on the preview div or its descendents.
             // If any are found, change their target to '_blank'.
 
-            let hyperlinksToChange = this.previewElement.querySelectorAll('a');  
+            let hyperlinksToChange = this.$refs.previewElement.querySelectorAll('a');  
             for (var eachHyperlink of hyperlinksToChange) {
                 eachHyperlink.setAttribute('target', '_blank');
             }
@@ -16456,9 +16456,9 @@ var foMarkdownNote = {
         },
 
         initializeCodeMirrorDivIfNecessary() {
-            if (!this.codeMirrorDiv) {
-                this.codeMirrorDiv = this.vueOuterDiv.getElementsByClassName('CodeMirror')[0];
-                this.codeMirrorLines = this.codeMirrorDiv.getElementsByClassName('CodeMirror-lines')[0];
+            if (!this.$refs.codeMirrorDiv) {
+                this.$refs.codeMirrorDiv = this.$refs.vueOuterDiv.getElementsByClassName('CodeMirror')[0];
+                this.$refs.codeMirrorLines = this.$refs.codeMirrorDiv.getElementsByClassName('CodeMirror-lines')[0];
 
                 // After toggling into preview mode the first time, we have on hand all of the elements whose
                 // styles and vertical scrollbars we want to control. 
@@ -16470,7 +16470,7 @@ var foMarkdownNote = {
         },
 
         initializeCodeMirrorStyles() {
-            let cmds = this.codeMirrorDiv.style;
+            let cmds = this.$refs.codeMirrorDiv.style;
                 cmds.backgroundColor = this.backgroundColor;                    
                 cmds.color = this.color;
                 cmds.border = 0;
@@ -16482,7 +16482,7 @@ var foMarkdownNote = {
                 cmds.borderRadius = '0';
                 cmds.height = '100%';
 
-            let cmls = this.codeMirrorLines.style;
+            let cmls = this.$refs.codeMirrorLines.style;
                 cmls.paddingTop = '10px';
                 cmls.paddingBottom = '10px';
                 cmls.paddingLeft = '0';
@@ -16491,9 +16491,9 @@ var foMarkdownNote = {
             },
 
         initializePreviewElementIfNecessary() {
-            if (!this.previewElement) {
-                this.previewElement = this.codeMirrorDiv.getElementsByClassName('editor-preview')[0];
-                let pes = this.previewElement.style;
+            if (!this.$refs.previewElement) {
+                this.$refs.previewElement = this.$refs.codeMirrorDiv.getElementsByClassName('editor-preview')[0];
+                let pes = this.$refs.previewElement.style;
                     pes.cursor = 'default';
                     pes.backgroundColor = this.backgroundColor;
                     pes.lineHeight = this.lineHeight;
@@ -16501,7 +16501,7 @@ var foMarkdownNote = {
         },
 
         initializeVueOuterDivStyles() {            
-            let ods = this.vueOuterDiv.style;
+            let ods = this.$refs.vueOuterDiv.style;
                 ods.fontSize = this.fontSize;
                 ods.height = '100%';
 
@@ -16583,7 +16583,7 @@ var foMarkdownNote = {
 
             // Set cursor color.
 
-            let allCursors = this.codeMirrorDiv.getElementsByClassName('CodeMirror-cursor');
+            let allCursors = this.$refs.codeMirrorDiv.getElementsByClassName('CodeMirror-cursor');
             for (var i = 0; i < allCursors.length; i++) {
                 allCursors[i].style.borderLeftColor = this.color;
             }      
