@@ -33,7 +33,11 @@ export default {
             type: String,
             default: '1.2'
         },
-        note: String
+        note: String,
+        previewModeTrigger: {
+            type: String,
+            default: 'default'
+        }
     },
 
     data() { return {
@@ -127,6 +131,9 @@ export default {
                 cmls.lineHeight = this.lineHeight
             let pes = this.$refs.previewElement.style
                 pes.lineHeight = this.lineHeight
+        },
+        previewModeTrigger: function(newValue, oldValue) {
+            this.enterPreviewMode('previewModeTrigger')
         }
     },
 

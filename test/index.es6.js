@@ -14,11 +14,8 @@ var vueModel = new Vue({
         // TODO: In index.html, bind fo-markdown-note to randomly-generated data using v-for.
     },
     mounted() {
-        setTimeout(() => { 
-            // TODO: Iterate markdown note data and make random changes.
-
-        }, 1000)
-
+        // this.$nextTick(function () {            
+        // })
     },
     methods: {
         noteOnChange(newNote) {
