@@ -16291,12 +16291,7 @@ var foMarkdownNote = {
         editModeIsInitialized:  false,
         mode:                   null,
         simplemde:              null,
-        textareaId:             this.id + '-textarea',
-        // codeMirrorDiv:          null,
-        // codeMirrorLines:        null,
-        // previewElement:         null,
-        // simpleMdeElement:       null,
-        // vueOuterDiv:            null
+        textareaId:             this.id + '-textarea'
     }},
 
     // In the template we set the id of the outer div to be the same as the id of the vue component.
@@ -16338,8 +16333,11 @@ var foMarkdownNote = {
 
         // this.initializeResizeObserver()
 
-        this.enterPreviewMode('mounted');
+        this.$nextTick(function () {            
+            // console.info('index.es6.js: mounted(): $nextTick: Fired!')
 
+            this.enterPreviewMode('mounted');
+        });
         // console.info('fo-markdown-note.es6.js: mounted(): End')
     },
 

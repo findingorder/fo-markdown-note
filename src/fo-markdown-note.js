@@ -84,8 +84,11 @@ export default {
 
         // this.initializeResizeObserver()
 
-        this.enterPreviewMode('mounted')
+        this.$nextTick(function () {            
+            // console.info('index.es6.js: mounted(): $nextTick: Fired!')
 
+            this.enterPreviewMode('mounted')
+        })
         // console.info('fo-markdown-note.es6.js: mounted(): End')
     },
 
