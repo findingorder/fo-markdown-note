@@ -16314,7 +16314,7 @@ var foMarkdownNote = {
 
 
     mounted() {
-        // console.info('fo-markdown-note.es6.js: mounted(): Start')
+        console.info('fo-markdown-note.es6.js: mounted(): Fired!');
 
         // Initialize convenience references.
     
