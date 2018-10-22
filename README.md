@@ -1,11 +1,3 @@
-# TO DO
-
-- Version number = 1.1.0; use in commit message
-- Create a Release in GitHub
-- Re-clone the DEV branch, delete its contents (except for the .git file), commit and push changes
-- Do a pull request and merge into master in the GitHub repo
-- Publish on NPM; what else is needed to make ready for NPM?
-
 # fo-markdown-note Component for Vue.js
 
 **fo-markdown-note** is a **Vue.js** component that provides a simple Markdown editor that can be included in your Vue.js project.
