@@ -53,7 +53,7 @@ If you are creating a single-file Vue component using a *.vue* file, your JavaSc
 
 ```JavaScript
 <script>
-    import FoMarkdownNote from './components/FoMarkdownNote.vue'
+    import FoMarkdownNote from 'fo-markdown-note'
 
     export default {
         name: 'app',
