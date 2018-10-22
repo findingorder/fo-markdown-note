@@ -1,20 +1,25 @@
-// console.info("fo-markdown-note.es6.js: Start")
+<template>
+    <div :id='id' class='outer-div' ref='vueOuterDiv'
+        v-on:mousedown='markdownNoteOnMouseDown'
+        v-on:mouseup='markdownNoteOnMouseUp'
+        v-on:keydown='markdownNoteOnKeyDown'
+        style='visibility: hidden;'>
+            <!-- <textarea :id='textareaId' ref='simpleMdeElement'>{{note}}</textarea> -->
+            <textarea :id='textareaId' ref='simpleMdeElement' v-model='note'></textarea>
+    </div>
+</template>
 
+<script>
 import SimpleMDE from 'simplemde'
-import './lib/simplemde-modified.css'
-import './node_modules/vue-resize/dist/vue-resize.css'
-// import { ResizeObserver } from 'vue-resize'
 
 export default {
-
-    // Props are component data that can be set in the html tag using attributes.
-    
+    name: 'FoMarkdownNote',
     props: {
-        id: String, 
+        id: String,
         backgroundColor: {
             type: String,
             default: '#fff'
-        }, 
+        },
         color: {
             type: String,
             default: '#000'
@@ -49,26 +54,11 @@ export default {
         textareaId:             this.id + '-textarea'
     }},
 
-    // In the template we set the id of the outer div to be the same as the id of the vue component.
-    // Code inside the component should see this as unique and should not confuse it with the vue component itself.
-
-    template: `
-        <div :id='id' class='outer-div' ref='vueOuterDiv'
-            v-on:mousedown='markdownNoteOnMouseDown' 
-            v-on:mouseup='markdownNoteOnMouseUp'
-            v-on:keydown='markdownNoteOnKeyDown' 
-            style='visibility: hidden;'>
-                <textarea :id='textareaId' ref='simpleMdeElement'>{{note}}</textarea>    
-        </div>
-    `,
-    // <resize-observer id='outer-div-resize-observer' @notify='outerDivOnResize' />
-
-
     mounted() {
-        console.info('fo-markdown-note.es6.js: mounted(): Fired!')
+        // console.info('fo-markdown-note.es6.js: mounted(): Fired!')
 
         // Initialize convenience references.
-    
+
         // this.vueOuterDiv = document.getElementById(this.id)
 
         // Instantiate the SimpleMDE.
@@ -79,19 +69,17 @@ export default {
             element: this.$refs.simpleMdeElement,
             status: false,
             toolbar: false,
-            autofocus: false
+            autofocus: true
         })
 
         this.initializeVueOuterDivStyles()
 
         this.initializeCodeMirrorDivIfNecessary()
 
-        // this.initializeResizeObserver()
-
         // Must be done before $nextTick to make this.$refs.previewElement available downstream.
         this.enterPreviewMode('mounted')
 
-        // this.$nextTick(function () {            
+        // this.$nextTick(function () {
         //     // console.info('index.es6.js: mounted(): $nextTick: Fired!')
 
         // })
@@ -102,7 +90,7 @@ export default {
         backgroundColor: function(newValue, oldValue) {
             // console.info('fo-markdown-note.js: watch: backgroundColor: Fired! newValue = ' + newValue)
             let cmds = this.$refs.codeMirrorDiv.style
-                cmds.backgroundColor = this.backgroundColor                    
+                cmds.backgroundColor = this.backgroundColor
 
             let pes = this.$refs.previewElement.style
                 pes.backgroundColor = this.backgroundColor
@@ -144,22 +132,22 @@ export default {
             // Check to see if there are any hyperlinks on the preview div or its descendents.
             // If any are found, change their target to '_blank'.
 
-            let hyperlinksToChange = this.$refs.previewElement.querySelectorAll('a')  
+            let hyperlinksToChange = this.$refs.previewElement.querySelectorAll('a')
             for (var eachHyperlink of hyperlinksToChange) {
                 eachHyperlink.setAttribute('target', '_blank')
             }
         },
-    
+
         enterEditMode(caller) {
             // console.info('fo-markdown-note: enterEditMode(): Start; caller = ' + caller + '; this.mode = ' + this.mode)
             if ((!this.mode) || (this.mode == 'preview')) {
 
-                // console.info("fo-markdown-note: enterEditMode(): Currently in preview mode, switching to edit mode")                    
+                // console.info("fo-markdown-note: enterEditMode(): Currently in preview mode, switching to edit mode")
 
                 this.simplemde.togglePreview()
                 this.mode = 'edit'
-                
-                this.simplemde.codemirror.focus()    
+
+                this.simplemde.codemirror.focus()
                 this.simplemde.codemirror.execCommand('goDocEnd')
 
                 // Set cursor color.
@@ -170,13 +158,14 @@ export default {
                     // Hook the cursor activity event so the cursor color will stay set.
 
                     this.simplemde.codemirror.on('cursorActivity', (e) => {
-                        
+
                         // Remember the cursor position so we can re-position it whenever the markdown note is resized
 
                         // this.getCursorPosition()
 
                         // This requires a teeny tiny delay in order to work.
-                        setTimeout(() => { 
+                        setTimeout(() => {
+                            // console.info('FoMarkdownNote.vue: enterEditMode(): About to set cursor color')
                             this.setCursorColor()
                         }, 10)
                     })
@@ -189,16 +178,20 @@ export default {
                     this.editModeIsInitialized = true
                 }
 
-                // this.getCursorPosition()                
+                // console.trace()
+
+
+                // this.getCursorPosition()
+
             } else {
-                // console.info("fo-markdown-note: enterEditMode(): Not in preview mode, nothing to do")                    
+                // console.info("fo-markdown-note: enterEditMode(): Not in preview mode, nothing to do")
             }
             // console.info("fo-markdown-note: enterEditMode(): End")
         },
 
         enterPreviewMode(caller) {
             // console.info('fo-markdown-note: enterPreviewMode(): Start; caller = ' + caller + '; this.mode = ' + this.mode)
-    
+
             // Go into preview mode if not already in preview mode.
 
             if ((!this.mode) || (this.mode == 'edit')) {
@@ -209,11 +202,11 @@ export default {
                 this.initializePreviewElementIfNecessary()
 
                 this.changeHyperlinkTargets()
-        
+
             } else {
-                // console.info("fo-markdown-note: enterPreviewMode(): Currently in preview mode, nothing to do")                   
+                // console.info("fo-markdown-note: enterPreviewMode(): Currently in preview mode, nothing to do")
             }
-            
+
             // console.info("fo-markdown-note: enterPreviewMode(): End")
         },
 
@@ -223,7 +216,7 @@ export default {
                 this.$refs.codeMirrorLines = this.$refs.codeMirrorDiv.getElementsByClassName('CodeMirror-lines')[0]
 
                 // After toggling into preview mode the first time, we have on hand all of the elements whose
-                // styles and vertical scrollbars we want to control. 
+                // styles and vertical scrollbars we want to control.
 
                 this.initializeCodeMirrorStyles()
 
@@ -233,7 +226,7 @@ export default {
 
         initializeCodeMirrorStyles() {
             let cmds = this.$refs.codeMirrorDiv.style
-                cmds.backgroundColor = this.backgroundColor                    
+                cmds.backgroundColor = this.backgroundColor
                 cmds.color = this.color
                 cmds.border = 0
                 cmds.paddingTop = 0
@@ -262,19 +255,19 @@ export default {
             }
         },
 
-        initializeVueOuterDivStyles() {            
+        initializeVueOuterDivStyles() {
             let ods = this.$refs.vueOuterDiv.style
                 ods.fontSize = this.fontSize
                 ods.height = '100%'
 
             // Wait a short time until the browser is able to remove the scrollbars.
 
-            setTimeout(function() { 
+            setTimeout(function() {
                 ods.visibility = 'visible'
 
                 // TODO: Raise a 'componentReady' event to signal to the parent that the markdown note is now visible.
             }, 500)
-                
+
             // })
         },
 
@@ -283,13 +276,13 @@ export default {
                 // console.info('fo-markdown-note: markdownNoteOnBlur(): Start; e = ')
                 // console.info(e)
 
-                this.enterPreviewMode('markdownNoteOnBlur')                
+                this.enterPreviewMode('markdownNoteOnBlur')
             } else {
-                // console.info('fo-markdown-note: markdownNoteOnBlur(): Blur handler is not enabled; nothing to to')   
+                // console.info('fo-markdown-note: markdownNoteOnBlur(): Blur handler is not enabled; nothing to to')
 
                 // Re-enable blur handling. If it needs to be disabled again, onMouseDown will take care of that.
 
-                this.blurHandlerEnabled = true                 
+                this.blurHandlerEnabled = true
             }
         },
 
@@ -309,6 +302,15 @@ export default {
         markdownNoteOnMouseUp(e) {
             // console.info('fo-markdown-note: markdownNoteOnMouseUp(): Fired!')
             this.markdownNoteOnClick(e)
+
+            // Keep focus on the editor.
+
+            var codeMirror = this.$refs.codeMirror
+
+            // console.info('fo-markdown-note: markdownNoteOnMouseUp(): codeMirror = ')
+            // console.info(codeMirror)
+
+            // console.info('fo-markdown-note: markdownNoteOnMouseUp(): End')
         },
 
         markdownNoteOnClick(e) {
@@ -316,21 +318,23 @@ export default {
             // console.info(e)
 
             // console.info('fo-markdown-note: About to emit a click event')
-            this.$emit('click', this)
+            // this.$emit('click', this)
             // console.info('fo-markdown-note: Finished emitting a click event')
 
 
             if (this.mode == 'edit') {
                 // console.info('fo-markdown-note: markdownNoteOnClick(): Currently in edit mode; nothing to do')
-                return                  
             } else {
                 // If e.target is a hyperlink, do nothing. Allow the hyerlink navigation.
 
+                // console.info('fo-markdown-note: markdownNoteOnClick(): Not currently in edit mode; toggle into edit mode')
                 // console.info('fo-markdown-note: markdownNoteOnClick(): e.target.tagName = <' + e.target.tagName + '>')
                 if (e.target.tagName.toUpperCase() == 'A') {
                     // console.info('fo-markdown-note: markdownNoteOnClick(): e.target is a hyperlink; nothing to do')
                     return
                 } else {
+                    // console.info('FoMarkdownNote.vue: Before calling this.enterEditMode, stack trace is:')
+                    // console.trace()
                     this.enterEditMode('markdownNoteOnClick')
                 }
             }
@@ -348,10 +352,29 @@ export default {
             let allCursors = this.$refs.codeMirrorDiv.getElementsByClassName('CodeMirror-cursor');
             for (var i = 0; i < allCursors.length; i++) {
                 allCursors[i].style.borderLeftColor = this.color
-            }      
+            }
+            // console.info("fo-markdown-note: setCursorColor(): End")
         }
-
     }
 }
+</script>
 
-// console.info("fo-markdown-note.es6.js: End")
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+    @import './lib/simplemde-modified.css';
+
+    h3 {
+        margin: 40px 0 0;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        display: inline-block;
+        margin: 0 10px;
+    }
+    a {
+        color: #42b983;
+    }
+</style>

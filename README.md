@@ -1,3 +1,11 @@
+# TO DO
+
+- Version number = 1.1.0; use in commit message
+- Create a Release in GitHub
+- Re-clone the DEV branch, delete its contents (except for the .git file), commit and push changes
+- Do a pull request and merge into master in the GitHub repo
+- Publish on NPM; what else is needed to make ready for NPM?
+
 # fo-markdown-note Component for Vue.js
 
 **fo-markdown-note** is a **Vue.js** component that provides a simple Markdown editor that can be included in your Vue.js project.
@@ -6,18 +14,34 @@ fo-markdown-note is a thin Vue.js wrapper around the **SimpleMDE** Markdown edit
 - https://simplemde.com/
 - https://github.com/sparksuite/simplemde-markdown-editor
 
-fo-markdown note is written in **ECMAScript 6th Edition** (a.k.a. **ECMAScript 2015**, a.k.a. **ES6**) and is intended for inclusion in an ES6 application.  No provision has been made for supporting earlier JavaScript editions.
+## What's New in Version 1.1
 
-fo-markdown-note is provided as an **ES6 module**. No provision has been made for older idiosyncratic module formats such as CommonJS or AMD.
+fo-markdown-note is now entirely built with [**Vue CLI3**](https://cli.vuejs.org/) and its [GUI project manager](https://cli.vuejs.org/guide/creating-a-project.html#using-the-gui). This greatly simplifies the build process and yields a distributable that is backwards-compatible with older ECMAScript versions through the CLI's use of [**Babel**](https://babeljs.io/).
 
-fo-markdown-note is packaged into a single file using **rollup.js**.  Currently the bundle is not minified or uglified; we intend to do this in a later release.
+The previous version 1.0 of fo-markown-note was laboriously hand-rolled using [**rollup.js**](https://rollupjs.org/guide/en). Vue CLI3 fully automates the build process and uses [**webpack**](https://webpack.js.org/) to bundle the distributable. This bundling comes for free: we needn't have any knowledge of webpack and don't have to work with it directly. This saves us a *tremendous amount of work*.
+
+## Getting fo-markdown-note
+
+fo-markdown-note is distributed using [Node Package Manager (NPM)](https://www.npmjs.com/package/fo-markdown-note). If you are using NPM directly (i.e. without Vue CLI3), you can install it into your project using the following command:
+
+```bash
+npm install fo-markdown-note
+```
+
+The preferred way to include fo-markdown-note (or any NPM package) in your Vue project is to use the [Vue CLI3 GUI project manager](https://cli.vuejs.org/guide/creating-a-project.html#using-the-gui), which you can access using the command
+
+```bash
+vue ui
+```
+
+After creating your project in the GUI project manager, open it in the GUI and click the *Dependencies* tab at the left side of the project page. Then click the *Install dependency* button in the upper-right corner of the page. In the *Install new dependency* dialog box that appears, select either *Main dependency* or *Development dependency*, then search for "fo-markdown-note" and install it.
 
 ## Using fo-markdown-note
 
-To include fo-markdown-note in your project, simply import it using the ES6 *import* statement:
+To include fo-markdown-note in your project, include the following *import* statement at the top of your JavaScript:
 
 ```JavaScript
-import FoMarkdownNote from 'fo-markdown-note-bundle.js'
+import FoMarkdownNote from 'fo-markdown-note'
 ```
 
 Then include it as a component in your Vue.js model:
@@ -31,7 +55,23 @@ var vueModel = new Vue({
 })
 ```
 
-This will make the *\<fo-markdown-note\>* tag available for use within your project's HTML. 
+This will make the *\<fo-markdown-note\>* tag available for use within your project's HTML.
+
+If you are creating a single-file Vue component using a *.vue* file, your JavaScript will look like this:
+
+```JavaScript
+<script>
+    import FoMarkdownNote from './components/FoMarkdownNote.vue'
+
+    export default {
+        name: 'app',
+        components: {
+            FoMarkdownNote
+        },
+    ...
+```
+
+When fo-markdown-note first appears in your application's UI, it is in Preview Mode.  This shows the formatted output rendered from the Markdown source.  When a user clicks in the body of the note, fo-markdown-note switches into Edit Mode, showing the editable Markdown source. To return to Preview Mode, the user can either press the Escape key or click anywhere outside the note.
 
 ### Attributes
 
@@ -54,80 +94,25 @@ Values for the following attributes are expressed using **CSS** syntax:
 ### Example
 
 ```html
-<fo-markdown-note 
-    id="note1"                    
+<fo-markdown-note
+    id="note1"
     note="Remember to do what I forgot to do."
     bgcolor="LemonChiffon"
     v-on:change="noteOnChange()">
 </fo-markdown-note>
 ```
 
-## Building fo-markdown-note
+## Building fo-markdown-note and running the test application
 
-The source code for fo-markdown-note can be found in the **src** directory. The build process uses the file **fo-markdown-note.js** plus files from the **src/lib** directory and the **src/node_modules** directory.
-
-When you clone or download the **git** repo, you don't get the **src/node_modules** directory. Since this directory can be easily re-generated using **npm**, there's no reason to include it in the git repo.  The **src/package.json** contains all of the information needed to re-generate the **src/node_modules** directory.  To do this, *cd* to the **src** directory and enter the command:
-
-```bash
-npm install
-```
-
-npm will fetch and install all of the node modules listed in **package.json**.
-
-fo-markdown-note is built into a rollup.js bundle using the **build.sh** script found in the **src** directory.  At this writing, **build.sh** contains only the command *rollup -c*. We have the habit of creating a **build.sh** script no matter how simple its contents so that we never have to remember which command(s) to use for different kinds of projects.
-
-To build the bundle, *cd* to the **src** directory and enter the command
-
-```bash
-./build.sh
-```
-
-After a successful build, you should see the following results:
-
-```
-fo-markdown-note.js → ../dist/fo-markdown-note-bundle.js...
-created ../dist/fo-markdown-note-bundle.js in 1.8s
-```
-
-## Running the Test Application
-
-The included test application can be run from the **test** directory.
-
-As you did with the **src** directory, you must run *npm install* to re-generate the **node_modules** directory used by the test application.
-
-The test application can be run using the *http-server* npm module.  To run it, *cd* to the **test** directory and enter the command
-
-```bash
-http-server
-```
-
-This will open a simple web server that serves its content on *http://localhost:8080*.
+If you want to build fo-markdown-note yourself and run its test application, clone this repository and then open its direcory in the Vue CLI3 GUI project manager.  With the project open in the GUI, click the *Tasks* tab at the left side of the page and then click *Serve* on the sub-menu that appears.
 
 ## Dependencies
 
-fo-markdown-note's dependencies fall into two categories, those that are bundled into **fo-markdown-note-bundle-js** and those that are expected to be present in the project in which fo-markdown-note is used.
+To see fo-markdown-note's dependencies, open the project in the Vue CLI3 project manager and click the *Dependencies* tab at the left side of the page.
 
-The latter category includes widely-used libraries such as JQuery, Lodash, and Vue.js.
+The distributable bundle contains two dependencies, **simplemde** and **vue** itself.
 
-Bundled into **fo-markdown-note-bundle-js** are libraries that are unique or specific to fo-markdown-note. Since the main purpose of fo-markdown-note is to wrap SimpleMDE into a Vue.js component, SimpleMDE and its CodeMirror dependency are bundled.
-
-You can change which libraries you want to bundle or keep external by editing the **src/package.json** file and moving them between the *dependencies* and *devDependencies* sections, or through use of the *external* option in **src/rollup.config.js**.  You need to re-build the bundle after making any such changes.
-
-## Getting fo-markdown-note from NPM
-
-If you want to use the **dist/fo-markdown-note-bundle.js** in your project and don't think you'll ever need to re-build it, you can obtain it from NPM using the command
-
-```bash
-npm install fo-markdown-note
-```
-
-This will place a copy of **fo-markdown-note-bundle.js** in your project's **node_modules** directory along with its dependencies.  You can then import it into your ES6 JavaScript using the command
-
-```JavaScript
-import FoMarkdownNote from 'node_modules/fo-markdown-note/fo-markdown-note-bundle.js'
-```
-
-In this scenario, **fo-markdown-note-bundle.js** will contain all of the bundled dependencies, and the external dependencies will be made known to NPM in the **npm/package.json** file.  This **package.json** file is different from the one found in the **src** directory, and is used only for publishing on NPM.  
+The test application uses **interactjs** for resizing, but this dependency is not required by fo-markdown-note and isn't bundled in the distributable.
 
 ## Acknowledgements
 
@@ -136,7 +121,5 @@ Like most open source projects, fo-markdown-note is based on the work of others.
 - [Vue.js](https://vuejs.org/) by [Evan You](https://github.com/yyx990803) and a host of [other contributors](https://vuejs.org/v2/guide/team.html)
 - [SimpleMDE](https://simplemde.com/) by [Sparksuite](https://www.sparksuite.com/)
 - [CodeMirror](https://codemirror.net/), the text editor on which SimpleMDE is based, by [Marijn Haverbeke](https://github.com/marijnh) and many [other contributors](https://github.com/codemirror/CodeMirror/)
-- [Detect Element Resize](https://github.com/sdecima/javascript-detect-element-resize) by Sebastián Décima
-- [rollup.js](https://rollupjs.org) by [Rich Harris](https://github.com/Rich-Harris), [Lukas Taegert](https://github.com/lukastaegert), and a host of [other contributors](https://github.com/rollup/rollup/graphs/contributors)
-
-We also gratefully acknowledge the [JQuery](https://jquery.com/) and [Lodash](https://lodash.com/) projects on which so much the web is built, and the [gridstack.js](http://gridstackjs.com/) component used in our test application.
+- [webpack](https://webpack.js.org/), the module bundler that Vue CLI3 uses to package its distributables, by [Tobias Koppers](https://github.com/sokra) and over four hundred [other contributors](https://github.com/webpack/webpack/graphs/contributors)
+- [interact.js](http://interactjs.io/), the resizing library used in our test application, authored by  [Taye Adeyemi](http://taye.me/blog/)
